@@ -1,0 +1,8 @@
+my_flask_app/
+├── app/
+│   ├── __init__.py
+│   ├── routes.py
+│   └── templates/
+│       └── index.html
+├── run.py
+└── requirements.txt
