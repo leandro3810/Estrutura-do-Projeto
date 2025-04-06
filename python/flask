@@ -1,7 +1,0 @@
-do flask import flask
-
-aplicativo= flask (_ _nome_ _)
-
-@app.route ("/")
-def hello ():
-    return "olá, mundo!"
