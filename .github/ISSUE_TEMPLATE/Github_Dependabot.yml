@@ -1,0 +1,22 @@
+# Dependabot configuration file
+# Documentation: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # Update Node.js dependencies
+  - package-ecosystem: "npm" # Use the package manager (e.g., npm, pip, maven)
+    directory: "/" # Root directory of the project
+    schedule:
+      interval: "weekly" # Check for updates weekly
+      day: "monday" # Specify the day of the week for updates
+      time: "04:00" # Specify the time (UTC) for updates
+    commit-message:
+      prefix: "deps" # Prefix for Dependabot commit messages
+    ignore:
+      - dependency-name: "example-library" # Example of ignoring specific dependencies
+        versions: ["1.x"] # Ignore updates to certain versions
+  # Update Python dependencies
+  - package-ecosystem: "pip" # Python's package manager
+    directory: "/src" # Specify subdirectory for Python dependencies
+    schedule:
+      interval: "daily"
