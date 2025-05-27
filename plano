@@ -1,0 +1,8 @@
+1. Clarify the tech stack and UI framework (e.g., React, Vue, plain HTML/JS).
+2. Choose a public weather API (e.g., OpenWeatherMap, WeatherAPI.com) and review its endpoints.
+3. Design a basic dashboard interface: input for city, display for current weather, and maybe forecast.
+4. Implement the API integration for fetching weather data.
+5. Build UI components to display the fetched weather info.
+6. Provide example code and folder structure for the dashboard project.
+7. Add a .keep file to ensure empty directories are versioned if applicable.
+8. Offer guidance on obtaining API keys if necessary.
