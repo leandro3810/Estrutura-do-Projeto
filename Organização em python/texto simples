@@ -1,0 +1,16 @@
+estrutura-do-projeto/
+│
+├── app/
+│   ├── __init__.py
+│   ├── routes.py
+│   ├── models.py
+│   └── templates/
+│       └── index.html
+│
+├── tests/
+│   └── test_basic.py
+│
+├── .env
+├── .gitignore
+├── requirements.txt
+└── run.py
