@@ -1,6 +1,6 @@
 name: Report remaining open issues
-on: 
-  schedule: 
+on:
+  schedule:
     # Daily at 8:20 UTC
     - cron: '20 8 * * *'
 jobs:
