@@ -1,5 +1,5 @@
 Body { 
-      font-family: Arial, sans-serif :
+      font-family: Arial, sans-serif;
       margin:0;
       padding:0;
       background-color:#f4f4f4;
@@ -15,7 +15,7 @@ nav {
 nav a {
        color:#fff;
        margin: 0 1em;
-       text-decoration:nome;
+       text-decoration:none;
 }
 
 .content {
