@@ -1,10 +1,11 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    color: #1c1e21;
-    line-height: 1.6;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0;
-    padding: 0;
 }
 
 nav {
@@ -25,7 +26,8 @@ nav a:hover {
 }
 
 .content {
-    padding: 20px;
+    width: 90%;
+    max-width: 400px;
 }
 
 .about-container {
@@ -67,4 +69,55 @@ h2 {
     padding: 15px;
     margin-top: 20px;
     border-radius: 6px;
+}
+
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background: #ff8c00;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.weather-info h1 {
+    font-size: 3rem;
+    margin: 10px 0;
+}
+
+.temp-container {
+    font-size: 4rem;
+    font-weight: bold;
+}
+
+.details {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.3);
 }
