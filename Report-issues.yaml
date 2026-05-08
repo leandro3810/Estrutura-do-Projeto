@@ -1,0 +1,45 @@
+name: Report Remaining Open Issues
+
+on:
+  schedule:
+    # Diariamente às 08:20 UTC
+    - cron: "20 8 * * *"
+  workflow_dispatch: # Permite rodar manualmente para testes
+
+jobs:
+  report_issues:
+    name: Track and Report Issues
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    
+    steps:
+      - name: Fetch Open Issues Count
+        id: fetch_issues
+        run: |
+          QUERY='query($name: String!, $owner: String!) {
+            repository(owner: $owner, name: $name) {
+              issues(states: OPEN) {
+                totalCount
+              }
+            }
+          }'
+          
+          TOTAL_COUNT=$(gh api graphql -F owner="$OWNER" -F name="$REPO" -f query="$QUERY" --jq '.data.repository.issues.totalCount')
+          echo "NUM_OPEN_ISSUES=$TOTAL_COUNT" >> "$GITHUB_ENV"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+
+      - name: Create Issue Report
+        run: |
+          gh issue create \
+            --title "Relatório Diário: Issues Pendentes" \
+            --body "O repositório possui atualmente **$NUM_OPEN_ISSUES** issues abertas. 
+            
+            Este é um relatório automático gerado em $(date +'%d/%m/%Y %H:%M:%S')." \
+            --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
