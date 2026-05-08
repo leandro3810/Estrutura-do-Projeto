@@ -1,2 +1,4 @@
 #!/bin/bash
-python run.py
+cd ..
+source .venv/bin/activate
+pytest Tests/
