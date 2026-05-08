@@ -1,23 +1,43 @@
-# Estrutura do Projeto Flask
+# Estrutura do Projeto Flask 🚀
 
-Este é um exemplo de estrutura para um projeto Flask.
+Este repositório contém uma estrutura organizada para o desenvolvimento de aplicações web utilizando **Flask** (Python) e **TypeScript** (JS).
 
-## Como rodar o projeto
+## 🛠️ Tecnologias Utilizadas
 
-1. Instale as dependências:
+- **Backend:** Python com Flask.
+- **Frontend:** HTML5, CSS3 e TypeScript.
+- **Ferramentas:** Ruff (Linter/Formatter) e Shell scripts para automação.
+
+## 🚀 Como Configurar o Ambiente
+
+Para facilitar a configuração do ambiente virtual e instalação das dependências, utilize os scripts inclusos:
+
+### No Linux/macOS:
+```bash
+bash configurar-ambiente.sh
+```
+Isso criará a pasta `.venv`, ativará o ambiente e instalará o Flask e o Ruff automaticamente.
+
+### Ativação Manual:
+```bash
+source .venv/bin/activate
+```
+
+## 💻 Como Rodar o Projeto
+
+1. Certifique-se de que o ambiente virtual está ativado.
+2. Execute o servidor:
    ```bash
-   pip install -r requirements.txt
+   flask --app python/Run.py run --debug
    ```
+3. Acesse em seu navegador: `http://127.0.0.1:5000`
 
-2. Exporte as variáveis de ambiente (ou configure o `.flaskenv`):
-   ```bash
-   export FLASK_APP=run.py
-   export FLASK_ENV=development
-   ```
+## 📁 Estrutura de Pastas Principais
 
-3. Rode o servidor:
-   ```bash
-   flask run
-   ```
+- `python/`: Contém a lógica do servidor e rotas.
+- `templates/`: Arquivos HTML do projeto.
+- `Static/`: Arquivos estáticos (CSS, JS, Imagens).
+- `requirements.txt`: Lista de dependências Python.
 
-4. Acesse o aplicativo em `http://127.0.0.1:5000`.
+---
+Desenvolvido por [leandro3810](https://github.com/leandro3810).
