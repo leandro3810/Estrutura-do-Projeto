@@ -1,5 +1,5 @@
 import pytest
-from app import create_app
+from python import create_app
 
 @pytest.fixture
 def client():
@@ -9,5 +9,11 @@ def client():
         yield client
 
 def test_home(client):
+    """Teste para garantir que a rota principal está funcionando"""
     response = client.get('/')
+    assert response.status_code == 200
+
+def test_about(client):
+    """Teste para garantir que a rota 'about' está funcionando"""
+    response = client.get('/about')
     assert response.status_code == 200
