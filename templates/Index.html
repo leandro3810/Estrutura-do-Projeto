@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Flask App</title>
+    <title>Meu Projeto Flask</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to My Flask App!</h1>
-    <!--O script TS compilado ficará aqui -->
-    <script src="{{ url_for('static',filename='js/app.js) }}"></script>
+    <h1>🚀 Servidor Flask Operacional!</h1>
+    <p>Sua estrutura de projeto foi atualizada com sucesso.</p>
+    <a href="{{ url_for('about') }}">Sobre o Projeto</a>
 </body>
 </html>
