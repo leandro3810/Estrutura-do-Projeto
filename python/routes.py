@@ -1,8 +1,9 @@
-from flask import render_template
-from . import create_app
-
-app = create_app()
+from flask import render_template, current_app as app
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('Index.html')
+
+@app.route('/about')
+def about():
+    return render_template('About.html')
