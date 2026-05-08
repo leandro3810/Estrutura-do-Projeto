@@ -1,4 +1,0 @@
-python -m venv flask-env
-source flask-env/bin/activate  # Para Linux/Mac
-flask-env\Scripts\activate  # Para Windows
-pip install Flask
