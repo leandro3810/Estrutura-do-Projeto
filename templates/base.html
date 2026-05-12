@@ -14,6 +14,7 @@
     <div class="content">
         {% block content %}{% endblock %}
     </div>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/clock.js') }}" defer></script>
 </body>
 </html>

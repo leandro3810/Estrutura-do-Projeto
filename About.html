@@ -1,25 +1,44 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre - Estrutura do Projeto Flask + TypeScript</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="About.html">Sobre</a>
+    </nav>
 
-{% block title %}Sobre o Projeto{% endblock %}
+    <main class="content">
+        <section class="about-container">
+            <h1>📘 Sobre o Projeto</h1>
+            <p>
+                Este repositório foi organizado para servir como base de aplicações web com
+                <strong>Flask</strong> no backend, <strong>TypeScript</strong> no frontend e uma
+                estrutura simples para testes, automação e publicação estática.
+            </p>
 
-{% block content %}
-<section class="about-container">
-    <h1>Sobre o Projeto: Estrutura-do-Projeto</h1>
-    <p>Este repositório é uma base sólida para o desenvolvimento de aplicações web modernas, integrando um backend potente em <strong>Flask</strong> com um frontend dinâmico utilizando <strong>TypeScript</strong>.</p>
-    
-    <div class="project-goals">
-        <h2>Objetivos do Projeto</h2>
-        <ul>
-            <li><strong>Padronização:</strong> Fornecer uma estrutura de pastas organizada e profissional.</li>
-            <li><strong>Automação:</strong> Scripts Bash integrados para configuração rápida de ambiente virtual.</li>
-            <li><strong>Qualidade:</strong> Configuração de linting com Ruff e testes automatizados com Pytest.</li>
-            <li><strong>Pronto para Deploy:</strong> Estrutura compatível com GitHub Pages e servidores WSGI.</li>
-        </ul>
-    </div>
+            <div class="project-goals">
+                <h2>🎯 Objetivos</h2>
+                <ul>
+                    <li><strong>Padronização:</strong> manter uma estrutura clara para backend, templates, arquivos estáticos e testes.</li>
+                    <li><strong>Automação:</strong> facilitar setup, lint e testes com scripts Bash versionados.</li>
+                    <li><strong>Qualidade:</strong> incluir validações com Ruff e Pytest desde o início do projeto.</li>
+                    <li><strong>Deploy:</strong> permitir uso tanto com Flask quanto com GitHub Pages para documentação estática.</li>
+                </ul>
+            </div>
 
-    <div class="github-pages-info">
-        <h2>GitHub Pages</h2>
-        <p>A interface de documentação e demonstração deste projeto é servida via <strong>GitHub Pages</strong>, garantindo acesso rápido e estático aos manuais de arquitetura.</p>
-    </div>
-</section>
-{% endblock %}
+            <div class="github-pages-info">
+                <h2>📄 Navegação</h2>
+                <p>
+                    A página inicial apresenta a visão geral do projeto e esta página complementa a
+                    documentação com o objetivo e a organização da base.
+                </p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
