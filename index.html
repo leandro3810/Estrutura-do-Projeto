@@ -5,239 +5,165 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estrutura do Projeto Flask + TypeScript</title>
     <link rel="stylesheet" href="Style.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #00b4db, #0083b0);
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px 0 40px;
-        }
-
-        nav {
-            background-color: #24292e;
-            padding: 1rem;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        .about-container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #24292e;
-            border-bottom: 2px solid #eaecef;
-            padding-bottom: 10px;
-        }
-
-        h2 {
-            color: #0366d6;
-            margin-top: 30px;
-        }
-
-        .badge-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #f6f8fa;
-            border: 1px solid #d0d7de;
-            border-radius: 20px;
-            padding: 6px 14px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #24292e;
-        }
-
-        .badge.python  { border-left: 4px solid #3572A5; }
-        .badge.flask   { border-left: 4px solid #2ea44f; }
-        .badge.ts      { border-left: 4px solid #3178c6; }
-        .badge.shell   { border-left: 4px solid #89e051; }
-        .badge.ruff    { border-left: 4px solid #d73a49; }
-
-        .project-goals ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .project-goals li {
-            background: #f6f8fa;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 6px;
-            border-left: 5px solid #2ea44f;
-        }
-
-        .folder-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        .folder-card {
-            background: #f6f8fa;
-            border: 1px solid #d0d7de;
-            border-radius: 8px;
-            padding: 14px 16px;
-        }
-
-        .folder-card .folder-name {
-            font-family: monospace;
-            font-size: 1rem;
-            font-weight: 700;
-            color: #0366d6;
-        }
-
-        .folder-card p {
-            margin: 6px 0 0;
-            font-size: 0.85rem;
-            color: #57606a;
-        }
-
-        .code-block {
-            background: #1b1f23;
-            color: #e1e4e8;
-            border-radius: 8px;
-            padding: 16px 20px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            margin-top: 12px;
-        }
-
-        .code-block .comment { color: #8b949e; }
-        .code-block .cmd     { color: #79c0ff; }
-
-        .github-pages-info {
-            background-color: #e7f3ff;
-            border-left: 5px solid #007bff;
-            padding: 15px;
-            margin-top: 30px;
-            border-radius: 6px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-        }
-
-        footer a {
-            color: #fff;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
-
     <nav>
         <a href="index.html">Home</a>
         <a href="About.html">Sobre</a>
     </nav>
 
-    <main>
-        <section class="about-container">
-            <h1>🚀 Estrutura do Projeto Flask + TypeScript</h1>
-            <p>
-                Este repositório contém uma estrutura organizada para o desenvolvimento de aplicações web
-                utilizando <strong>Flask</strong> (Python) e <strong>TypeScript</strong> (JS).
-            </p>
+    <main class="content">
+        <section class="page-shell">
+            <section class="hero-card" id="topo">
+                <div>
+                    <p class="eyebrow">PLATAFORMA DO PROJETO</p>
+                    <h1 id="main-heading">Central inteligente do Estrutura-do-Projeto</h1>
+                    <p class="hero-text">
+                        Uma página mais estruturada para mostrar o código do seu projeto, a arquitetura
+                        principal e um agente de IA local para controlar a navegação do site.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="primary-action" href="#codigo">Explorar código</a>
+                        <a class="secondary-action" href="#agente-ia">Usar agente IA</a>
+                    </div>
+                </div>
+                <div class="hero-panel">
+                    <div class="status-pill">Agente online</div>
+                    <div id="clock" class="digital-clock"></div>
+                    <p class="panel-copy">
+                        Visual organizado para backend, frontend, testes, automação e deploy.
+                    </p>
+                </div>
+            </section>
 
-            <div class="badge-row">
-                <span class="badge python">🐍 Python</span>
-                <span class="badge flask">🌐 Flask</span>
-                <span class="badge ts">📘 TypeScript</span>
-                <span class="badge shell">🐚 Shell Scripts</span>
-                <span class="badge ruff">🔍 Ruff</span>
-            </div>
+            <section class="stats-grid" aria-label="Resumo do projeto">
+                <article class="stat-card">
+                    <span class="stat-number">4</span>
+                    <span class="stat-label">camadas principais</span>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-number">1</span>
+                    <span class="stat-label">agente local de controle</span>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-number">24h</span>
+                    <span class="stat-label">painel pronto para navegação</span>
+                </article>
+            </section>
 
-            <h2>🛠️ Tecnologias Utilizadas</h2>
-            <div class="project-goals">
-                <ul>
-                    <li><strong>Backend:</strong> Python com Flask — servidor leve, roteamento e templates Jinja2.</li>
-                    <li><strong>Frontend:</strong> HTML5, CSS3 e TypeScript compilado para JavaScript.</li>
-                    <li><strong>Qualidade:</strong> Linting e formatação automática com <strong>Ruff</strong>; testes com <strong>Pytest</strong>.</li>
-                    <li><strong>Automação:</strong> Scripts Bash para configuração rápida do ambiente virtual.</li>
-                </ul>
-            </div>
+            <section class="section-card" id="arquitetura">
+                <div class="section-heading">
+                    <p class="eyebrow">ARQUITETURA</p>
+                    <h2>Estrutura pronta para virar um site completo</h2>
+                </div>
+                <div class="stack-grid">
+                    <article class="stack-item" data-topic="backend">
+                        <h3>Backend Flask</h3>
+                        <p>Controla rotas, páginas, renderização de templates e integração do app.</p>
+                        <span>python/ · templates/</span>
+                    </article>
+                    <article class="stack-item" data-topic="frontend">
+                        <h3>Frontend TypeScript</h3>
+                        <p>Adiciona interações visuais, relógio em tempo real e agente de navegação.</p>
+                        <span>Static/Ts/ · Static/js/</span>
+                    </article>
+                    <article class="stack-item" data-topic="automation">
+                        <h3>Automação</h3>
+                        <p>Scripts simplificam setup, lint, testes e inicialização do ambiente.</p>
+                        <span>scripts/ · configurar-ambiente.sh</span>
+                    </article>
+                    <article class="stack-item" data-topic="testing">
+                        <h3>Qualidade</h3>
+                        <p>Validações com Ruff, Pytest e build TypeScript deixam a base confiável.</p>
+                        <span>Tests/ · pyproject.toml · tsconfig.json</span>
+                    </article>
+                </div>
+            </section>
 
-            <h2>📁 Estrutura de Pastas</h2>
-            <div class="folder-grid">
-                <div class="folder-card">
-                    <div class="folder-name">python/</div>
-                    <p>Lógica do servidor, rotas e configuração Flask.</p>
+            <section class="section-card" id="codigo">
+                <div class="section-heading">
+                    <p class="eyebrow">MAPA DO CÓDIGO</p>
+                    <h2>Onde está cada parte importante</h2>
                 </div>
-                <div class="folder-card">
-                    <div class="folder-name">templates/</div>
-                    <p>Arquivos HTML com templates Jinja2.</p>
+                <div class="code-map-grid">
+                    <article class="code-map-card">
+                        <h3>Servidor</h3>
+                        <ul>
+                            <li><strong>python/Run.py</strong> sobe o projeto Flask</li>
+                            <li><strong>python/routes.py</strong> organiza as rotas</li>
+                            <li><strong>templates/</strong> entrega as páginas renderizadas</li>
+                        </ul>
+                    </article>
+                    <article class="code-map-card">
+                        <h3>Interface</h3>
+                        <ul>
+                            <li><strong>Style.css</strong> define a camada visual estática</li>
+                            <li><strong>Script.js</strong> controla o agente de IA do site</li>
+                            <li><strong>Static/style.css</strong> mantém a versão Flask alinhada</li>
+                        </ul>
+                    </article>
+                    <article class="code-map-card">
+                        <h3>Operação</h3>
+                        <ul>
+                            <li><strong>scripts/setup.sh</strong> prepara dependências</li>
+                            <li><strong>scripts/lint.sh</strong> roda Ruff</li>
+                            <li><strong>scripts/test.sh</strong> roda Pytest</li>
+                        </ul>
+                    </article>
                 </div>
-                <div class="folder-card">
-                    <div class="folder-name">Static/</div>
-                    <p>Arquivos estáticos: CSS, JS compilado e imagens.</p>
+                <div class="command-panel" id="deploy">
+                    <div class="command-block">
+                        <span class="command-label">Setup</span>
+                        <code>bash scripts/setup.sh</code>
+                    </div>
+                    <div class="command-block">
+                        <span class="command-label">Build frontend</span>
+                        <code>npm run build</code>
+                    </div>
+                    <div class="command-block">
+                        <span class="command-label">Executar Flask</span>
+                        <code>flask --app python/Run.py run --debug</code>
+                    </div>
                 </div>
-                <div class="folder-card">
-                    <div class="folder-name">Tests/</div>
-                    <p>Suíte de testes automatizados com Pytest.</p>
-                </div>
-                <div class="folder-card">
-                    <div class="folder-name">scripts/</div>
-                    <p>Scripts utilitários de automação Bash.</p>
-                </div>
-                <div class="folder-card">
-                    <div class="folder-name">requirements.txt</div>
-                    <p>Dependências Python do projeto.</p>
-                </div>
-            </div>
+            </section>
 
-            <h2>⚡ Como Rodar</h2>
-            <div class="code-block">
-                <span class="comment"># 1. Configurar o ambiente virtual</span><br>
-                <span class="cmd">bash configurar-ambiente.sh</span><br><br>
-                <span class="comment"># 2. Iniciar o servidor Flask</span><br>
-                <span class="cmd">flask --app python/Run.py run --debug</span><br><br>
-                <span class="comment"># 3. Acessar no navegador</span><br>
-                <span class="cmd">http://127.0.0.1:5000</span>
-            </div>
-
-            <div class="github-pages-info">
-                <h2>📄 GitHub Pages</h2>
-                <p>
-                    A interface de documentação e demonstração deste projeto é servida via
-                    <strong>GitHub Pages</strong>, garantindo acesso rápido e estático aos
-                    manuais de arquitetura e visão geral do projeto.
-                </p>
-            </div>
+            <section class="section-card ai-section" id="agente-ia">
+                <div class="section-heading">
+                    <p class="eyebrow">AGENTE DE IA</p>
+                    <h2>Controle seu site com comandos rápidos</h2>
+                    <p>O agente pode destacar áreas do projeto, navegar pela página e ativar modo foco.</p>
+                </div>
+                <div class="ai-layout">
+                    <div class="ai-console">
+                        <form id="ai-agent-form" class="ai-form">
+                            <label class="sr-only" for="ai-agent-input">Comando do agente</label>
+                            <input id="ai-agent-input" type="text" placeholder="Ex.: mostrar backend, abrir deploy, modo foco">
+                            <button type="submit">Executar</button>
+                        </form>
+                        <div class="quick-actions">
+                            <button type="button" data-agent-command="mostrar backend">Backend</button>
+                            <button type="button" data-agent-command="mostrar frontend">Frontend</button>
+                            <button type="button" data-agent-command="mostrar testes">Testes</button>
+                            <button type="button" data-agent-command="abrir deploy">Deploy</button>
+                            <button type="button" data-agent-command="modo foco">Modo foco</button>
+                            <button type="button" data-agent-command="restaurar">Restaurar</button>
+                        </div>
+                    </div>
+                    <div class="ai-response-card">
+                        <p class="response-label">Resposta do agente</p>
+                        <div id="ai-agent-output" class="ai-output">
+                            Olá! Eu posso destacar backend, frontend, testes, automação, deploy ou restaurar a visão do site.
+                        </div>
+                    </div>
+                </div>
+            </section>
         </section>
     </main>
 
-    <footer>
-        <p>Desenvolvido por <a href="https://github.com/leandro3810" target="_blank" rel="noopener noreferrer">leandro3810</a></p>
+    <footer class="site-footer">
+        <p>Estrutura-do-Projeto · página estática com agente de IA local</p>
     </footer>
 
+    <script src="Script.js"></script>
 </body>
 </html>

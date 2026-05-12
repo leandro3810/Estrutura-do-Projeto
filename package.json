@@ -1,0 +1,25 @@
+{
+  "name": "estrutura-do-projeto",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Este repositório contém uma estrutura organizada para o desenvolvimento de aplicações web utilizando **Flask** (Python) e **TypeScript** (JS).",
+  "scripts": {
+    "build": "tsc",
+    "build:check": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leandro3810/Estrutura-do-Projeto.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/leandro3810/Estrutura-do-Projeto/issues"
+  },
+  "homepage": "https://github.com/leandro3810/Estrutura-do-Projeto#readme",
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

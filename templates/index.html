@@ -3,9 +3,156 @@
 {% block title %}Home — Estrutura-do-Projeto{% endblock %}
 
 {% block content %}
-<section class="home-container">
-    <h1 id="main-heading">Bem-vindo ao Estrutura-do-Projeto</h1>
-    <p>Um template moderno com <strong>Flask</strong> no backend e <strong>TypeScript</strong> no frontend.</p>
-    <div id="clock" class="digital-clock"></div>
+<section class="page-shell">
+    <section class="hero-card" id="topo">
+        <div>
+            <p class="eyebrow">PLATAFORMA DO PROJETO</p>
+            <h1 id="main-heading">Central inteligente do Estrutura-do-Projeto</h1>
+            <p class="hero-text">
+                Um site mais organizado para apresentar todo o código do projeto, sua arquitetura
+                e uma central com agente de IA para ajudar no controle da navegação e dos destaques.
+            </p>
+            <div class="hero-actions">
+                <a class="primary-action" href="#codigo">Explorar código</a>
+                <a class="secondary-action" href="#agente-ia">Usar agente IA</a>
+            </div>
+        </div>
+        <div class="hero-panel">
+            <div class="status-pill">Agente online</div>
+            <div id="clock" class="digital-clock"></div>
+            <p class="panel-copy">
+                Comandos rápidos para backend, frontend, testes, automação e deploy em um só lugar.
+            </p>
+        </div>
+    </section>
+
+    <section class="stats-grid" aria-label="Resumo do projeto">
+        <article class="stat-card">
+            <span class="stat-number">4</span>
+            <span class="stat-label">camadas principais</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-number">2</span>
+            <span class="stat-label">modos de entrega</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">foco em organização</span>
+        </article>
+    </section>
+
+    <section class="section-card" id="arquitetura">
+        <div class="section-heading">
+            <p class="eyebrow">ARQUITETURA</p>
+            <h2>Visão estruturada do site e do código</h2>
+        </div>
+        <div class="stack-grid">
+            <article class="stack-item" data-topic="backend">
+                <h3>Backend Flask</h3>
+                <p>Rotas, renderização de templates e inicialização da aplicação Python.</p>
+                <span>python/ · templates/</span>
+            </article>
+            <article class="stack-item" data-topic="frontend">
+                <h3>Frontend TypeScript</h3>
+                <p>Interações do site, componentes visuais e comportamento do agente local.</p>
+                <span>Static/Ts/ · Static/js/</span>
+            </article>
+            <article class="stack-item" data-topic="automation">
+                <h3>Automação</h3>
+                <p>Configuração do ambiente, lint, testes e inicialização com scripts reutilizáveis.</p>
+                <span>scripts/ · configurar-ambiente.sh</span>
+            </article>
+            <article class="stack-item" data-topic="testing">
+                <h3>Qualidade</h3>
+                <p>Ruff, Pytest e build TypeScript garantindo uma base pronta para evolução.</p>
+                <span>Tests/ · pyproject.toml · tsconfig.json</span>
+            </article>
+        </div>
+    </section>
+
+    <section class="section-card" id="codigo">
+        <div class="section-heading">
+            <p class="eyebrow">MAPA DO CÓDIGO</p>
+            <h2>Todos os blocos principais do projeto</h2>
+        </div>
+        <div class="code-map-grid">
+            <article class="code-map-card">
+                <h3>Aplicação principal</h3>
+                <ul>
+                    <li><strong>python/Run.py</strong> inicia o app Flask</li>
+                    <li><strong>python/routes.py</strong> define as rotas Home e Sobre</li>
+                    <li><strong>templates/</strong> entrega as páginas do site</li>
+                </ul>
+            </article>
+            <article class="code-map-card">
+                <h3>Interface web</h3>
+                <ul>
+                    <li><strong>Static/style.css</strong> controla o visual principal</li>
+                    <li><strong>Static/Ts/app.ts</strong> comanda a interface inteligente</li>
+                    <li><strong>Static/Ts/clock.ts</strong> atualiza o relógio em tempo real</li>
+                </ul>
+            </article>
+            <article class="code-map-card">
+                <h3>Validação</h3>
+                <ul>
+                    <li><strong>scripts/setup.sh</strong> prepara o ambiente</li>
+                    <li><strong>scripts/lint.sh</strong> executa Ruff</li>
+                    <li><strong>scripts/test.sh</strong> executa Pytest</li>
+                </ul>
+            </article>
+        </div>
+        <div class="command-panel" id="deploy">
+            <div class="command-block">
+                <span class="command-label">Setup</span>
+                <code>bash scripts/setup.sh</code>
+            </div>
+            <div class="command-block">
+                <span class="command-label">Build frontend</span>
+                <code>npm run build</code>
+            </div>
+            <div class="command-block">
+                <span class="command-label">Servidor Flask</span>
+                <code>flask --app python/Run.py run --debug</code>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card ai-section" id="agente-ia">
+        <div class="section-heading">
+            <p class="eyebrow">AGENTE DE IA</p>
+            <h2>Painel para controlar o site</h2>
+            <p>
+                Digite um comando para o agente destacar áreas, navegar pela página ou ativar o modo foco.
+            </p>
+        </div>
+        <div class="ai-layout">
+            <div class="ai-console">
+                <form id="ai-agent-form" class="ai-form">
+                    <label class="sr-only" for="ai-agent-input">Comando do agente</label>
+                    <input
+                        id="ai-agent-input"
+                        name="command"
+                        type="text"
+                        placeholder="Ex.: mostrar backend, abrir deploy, modo foco"
+                    >
+                    <button type="submit">Executar</button>
+                </form>
+                <div class="quick-actions">
+                    <button type="button" data-agent-command="mostrar backend">Backend</button>
+                    <button type="button" data-agent-command="mostrar frontend">Frontend</button>
+                    <button type="button" data-agent-command="mostrar testes">Testes</button>
+                    <button type="button" data-agent-command="abrir deploy">Deploy</button>
+                    <button type="button" data-agent-command="modo foco">Modo foco</button>
+                    <button type="button" data-agent-command="restaurar">Restaurar</button>
+                </div>
+            </div>
+            <div class="ai-response-card">
+                <p class="response-label">Resposta do agente</p>
+                <div id="ai-agent-output" class="ai-output">
+                    Olá! Eu posso destacar backend, frontend, testes, automação, deploy ou restaurar a visão do site.
+                </div>
+            </div>
+        </div>
+    </section>
 </section>
 {% endblock %}

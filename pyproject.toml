@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "estrutura-do-projeto"
 version = "0.1.0"
@@ -34,3 +38,6 @@ known-first-party = ["python"]
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.setuptools]
+packages = ["python"]

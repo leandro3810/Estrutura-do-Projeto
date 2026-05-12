@@ -1,25 +1,48 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre - Estrutura do Projeto Flask + TypeScript</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="About.html">Sobre</a>
+    </nav>
 
-{% block title %}Sobre o Projeto{% endblock %}
+    <main class="content">
+        <section class="page-shell">
+            <section class="section-card about-card">
+                <div class="section-heading">
+                    <p class="eyebrow">SOBRE O PROJETO</p>
+                    <h1>Uma base pronta para crescer com organização</h1>
+                </div>
+                <p>
+                    Esta estrutura foi preparada para apresentar o seu projeto como site, documentar o código,
+                    facilitar manutenção e abrir espaço para automação com um agente de IA local no frontend.
+                </p>
+                <div class="code-map-grid">
+                    <article class="code-map-card">
+                        <h3>Organização</h3>
+                        <p>Separação entre backend, templates, estáticos, testes e scripts de apoio.</p>
+                    </article>
+                    <article class="code-map-card">
+                        <h3>Navegação inteligente</h3>
+                        <p>O agente da página principal ajuda a focar em backend, frontend, testes e deploy.</p>
+                    </article>
+                    <article class="code-map-card">
+                        <h3>Próximos passos</h3>
+                        <p>Conectar APIs reais, autenticação, painel admin e automações mais avançadas.</p>
+                    </article>
+                </div>
+            </section>
+        </section>
+    </main>
 
-{% block content %}
-<section class="about-container">
-    <h1>Sobre o Projeto: Estrutura-do-Projeto</h1>
-    <p>Este repositório é uma base sólida para o desenvolvimento de aplicações web modernas, integrando um backend potente em <strong>Flask</strong> com um frontend dinâmico utilizando <strong>TypeScript</strong>.</p>
-    
-    <div class="project-goals">
-        <h2>Objetivos do Projeto</h2>
-        <ul>
-            <li><strong>Padronização:</strong> Fornecer uma estrutura de pastas organizada e profissional.</li>
-            <li><strong>Automação:</strong> Scripts Bash integrados para configuração rápida de ambiente virtual.</li>
-            <li><strong>Qualidade:</strong> Configuração de linting com Ruff e testes automatizados com Pytest.</li>
-            <li><strong>Pronto para Deploy:</strong> Estrutura compatível com GitHub Pages e servidores WSGI.</li>
-        </ul>
-    </div>
-
-    <div class="github-pages-info">
-        <h2>GitHub Pages</h2>
-        <p>A interface de documentação e demonstração deste projeto é servida via <strong>GitHub Pages</strong>, garantindo acesso rápido e estático aos manuais de arquitetura.</p>
-    </div>
-</section>
-{% endblock %}
+    <footer class="site-footer">
+        <p>Estrutura-do-Projeto · documentação e apresentação do projeto</p>
+    </footer>
+</body>
+</html>

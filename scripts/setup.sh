@@ -24,5 +24,10 @@ else
     echo -e "${YELLOW}Aviso: nenhum arquivo de dependências encontrado.${NC}"
 fi
 
+if [ -f package.json ]; then
+    echo -e "${GREEN}==> Instalando dependências TypeScript...${NC}"
+    npm install --quiet
+fi
+
 echo -e "${GREEN}==> Ambiente configurado com sucesso!${NC}"
 echo -e "Para ativar manualmente: ${GREEN}source .venv/bin/activate${NC}"

@@ -26,11 +26,15 @@ source .venv/bin/activate
 ## 💻 Como Rodar o Projeto
 
 1. Certifique-se de que o ambiente virtual está ativado.
-2. Execute o servidor:
+2. Compile os arquivos TypeScript:
+   ```bash
+   npm run build
+   ```
+3. Execute o servidor:
    ```bash
    flask --app python/Run.py run --debug
    ```
-3. Acesse em seu navegador: `http://127.0.0.1:5000`
+4. Acesse em seu navegador: `http://127.0.0.1:5000`
 
 ## 📁 Estrutura de Pastas Principais
 
