@@ -1,10 +1,243 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu aplicativo Flask</title>
+    <title>Estrutura do Projeto Flask + TypeScript</title>
+    <link rel="stylesheet" href="Style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0 40px;
+        }
+
+        nav {
+            background-color: #24292e;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .about-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #24292e;
+            border-bottom: 2px solid #eaecef;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #0366d6;
+            margin-top: 30px;
+        }
+
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #24292e;
+        }
+
+        .badge.python  { border-left: 4px solid #3572A5; }
+        .badge.flask   { border-left: 4px solid #2ea44f; }
+        .badge.ts      { border-left: 4px solid #3178c6; }
+        .badge.shell   { border-left: 4px solid #89e051; }
+        .badge.ruff    { border-left: 4px solid #d73a49; }
+
+        .project-goals ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .project-goals li {
+            background: #f6f8fa;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 5px solid #2ea44f;
+        }
+
+        .folder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .folder-card {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+
+        .folder-card .folder-name {
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0366d6;
+        }
+
+        .folder-card p {
+            margin: 6px 0 0;
+            font-size: 0.85rem;
+            color: #57606a;
+        }
+
+        .code-block {
+            background: #1b1f23;
+            color: #e1e4e8;
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+
+        .code-block .comment { color: #8b949e; }
+        .code-block .cmd     { color: #79c0ff; }
+
+        .github-pages-info {
+            background-color: #e7f3ff;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 6px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #fff;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Bem-vindo ao meu aplicativo Flask!</h1>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="About.html">Sobre</a>
+    </nav>
+
+    <main>
+        <section class="about-container">
+            <h1>🚀 Estrutura do Projeto Flask + TypeScript</h1>
+            <p>
+                Este repositório contém uma estrutura organizada para o desenvolvimento de aplicações web
+                utilizando <strong>Flask</strong> (Python) e <strong>TypeScript</strong> (JS).
+            </p>
+
+            <div class="badge-row">
+                <span class="badge python">🐍 Python</span>
+                <span class="badge flask">🌐 Flask</span>
+                <span class="badge ts">📘 TypeScript</span>
+                <span class="badge shell">🐚 Shell Scripts</span>
+                <span class="badge ruff">🔍 Ruff</span>
+            </div>
+
+            <h2>🛠️ Tecnologias Utilizadas</h2>
+            <div class="project-goals">
+                <ul>
+                    <li><strong>Backend:</strong> Python com Flask — servidor leve, roteamento e templates Jinja2.</li>
+                    <li><strong>Frontend:</strong> HTML5, CSS3 e TypeScript compilado para JavaScript.</li>
+                    <li><strong>Qualidade:</strong> Linting e formatação automática com <strong>Ruff</strong>; testes com <strong>Pytest</strong>.</li>
+                    <li><strong>Automação:</strong> Scripts Bash para configuração rápida do ambiente virtual.</li>
+                </ul>
+            </div>
+
+            <h2>📁 Estrutura de Pastas</h2>
+            <div class="folder-grid">
+                <div class="folder-card">
+                    <div class="folder-name">python/</div>
+                    <p>Lógica do servidor, rotas e configuração Flask.</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-name">templates/</div>
+                    <p>Arquivos HTML com templates Jinja2.</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-name">Static/</div>
+                    <p>Arquivos estáticos: CSS, JS compilado e imagens.</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-name">Tests/</div>
+                    <p>Suíte de testes automatizados com Pytest.</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-name">scripts/</div>
+                    <p>Scripts utilitários de automação Bash.</p>
+                </div>
+                <div class="folder-card">
+                    <div class="folder-name">requirements.txt</div>
+                    <p>Dependências Python do projeto.</p>
+                </div>
+            </div>
+
+            <h2>⚡ Como Rodar</h2>
+            <div class="code-block">
+                <span class="comment"># 1. Configurar o ambiente virtual</span><br>
+                <span class="cmd">bash configurar-ambiente.sh</span><br><br>
+                <span class="comment"># 2. Iniciar o servidor Flask</span><br>
+                <span class="cmd">flask --app python/Run.py run --debug</span><br><br>
+                <span class="comment"># 3. Acessar no navegador</span><br>
+                <span class="cmd">http://127.0.0.1:5000</span>
+            </div>
+
+            <div class="github-pages-info">
+                <h2>📄 GitHub Pages</h2>
+                <p>
+                    A interface de documentação e demonstração deste projeto é servida via
+                    <strong>GitHub Pages</strong>, garantindo acesso rápido e estático aos
+                    manuais de arquitetura e visão geral do projeto.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Desenvolvido por <a href="https://github.com/leandro3810" target="_blank" rel="noopener noreferrer">leandro3810</a></p>
+    </footer>
+
 </body>
+</html>
