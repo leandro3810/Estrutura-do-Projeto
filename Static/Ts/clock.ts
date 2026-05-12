@@ -1,8 +1,3 @@
-/**
- * clock.ts — Componente de relógio digital em tempo real.
- * Atualiza o elemento #clock a cada segundo com hora local.
- */
-
 function formatTwoDigits(n: number): string {
     return n.toString().padStart(2, "0");
 }
@@ -19,8 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const clockEl = document.getElementById("clock");
     if (!clockEl) return;
 
+    // Notifica leitores de tela a cada atualização do relógio
+    clockEl.setAttribute("aria-live", "polite");
+    clockEl.setAttribute("aria-atomic", "true");
+
     const tick = (): void => {
-        clockEl.innerText = getCurrentTime();
+        clockEl.textContent = getCurrentTime();
     };
 
     tick();
