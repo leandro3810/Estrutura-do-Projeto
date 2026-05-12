@@ -1,0 +1,123 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+nav {
+    background-color: #24292e;
+    padding: 1rem;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    width: 90%;
+    max-width: 400px;
+}
+
+.about-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #24292e;
+    border-bottom: 2px solid #eaecef;
+    padding-bottom: 10px;
+}
+
+h2 {
+    color: #0366d6;
+    margin-top: 30px;
+}
+
+.project-goals ul {
+    list-style: none;
+    padding: 0;
+}
+
+.project-goals li {
+    background: #f6f8fa;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 5px solid #2ea44f;
+}
+
+.github-pages-info {
+    background-color: #e7f3ff;
+    border-left: 5px solid #007bff;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 6px;
+}
+
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background: #ff8c00;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.weather-info h1 {
+    font-size: 3rem;
+    margin: 10px 0;
+}
+
+.temp-container {
+    font-size: 4rem;
+    font-weight: bold;
+}
+
+.details {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+}
