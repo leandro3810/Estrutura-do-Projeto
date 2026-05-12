@@ -1,17 +1,19 @@
 from flask import Flask
-import os
+
 
 def create_app(test_config=None):
     # Cria e configura a instância do app
-    app = Flask(__name__, 
-                instance_relative_config=True,
-                template_folder='../../templates',
-                static_folder='../../Static')
+    app = Flask(
+        __name__,
+        instance_relative_config=True,
+        template_folder="../../templates",
+        static_folder="../../Static",
+    )
 
     if test_config is None:
         # Carrega a configuração de instância, se existir, quando não estiver testando
         app.config.from_mapping(
-            SECRET_KEY='dev',
+            SECRET_KEY="dev",
         )
     else:
         # Carrega a configuração de teste se passada
@@ -27,9 +29,11 @@ def create_app(test_config=None):
     # Para testes, podemos usar as rotas principais ou mocks
     try:
         from python import routes
-        app.register_blueprint(routes.app) # Se usar Blueprint, ajuste para .bp
+
+        app.register_blueprint(routes.bp)
     except ImportError:
-        @app.route('/')
+
+        @app.route("/")
         def index():
             return "App de Teste Ativo"
 

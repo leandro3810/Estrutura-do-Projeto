@@ -218,9 +218,11 @@
             <div class="code-block">
                 <span class="comment"># 1. Configurar o ambiente virtual</span><br>
                 <span class="cmd">bash configurar-ambiente.sh</span><br><br>
-                <span class="comment"># 2. Iniciar o servidor Flask</span><br>
+                <span class="comment"># 2. Compilar os arquivos TypeScript</span><br>
+                <span class="cmd">npm run build</span><br><br>
+                <span class="comment"># 3. Iniciar o servidor Flask</span><br>
                 <span class="cmd">flask --app python/Run.py run --debug</span><br><br>
-                <span class="comment"># 3. Acessar no navegador</span><br>
+                <span class="comment"># 4. Acessar no navegador</span><br>
                 <span class="cmd">http://127.0.0.1:5000</span>
             </div>
 
