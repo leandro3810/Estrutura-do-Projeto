@@ -1,0 +1,36 @@
+[project]
+name = "estrutura-do-projeto"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "flask",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pytest",
+]
+
+# ── Ruff — Linter & Formatter ──────────────────────────────────────────────
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+ignore = ["B008"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["python"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
