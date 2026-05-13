@@ -17,9 +17,11 @@ def create_app(test_config=None):
     )
 
     app.config.from_object(DevelopmentConfig)
-    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or app.config.get(
-        "SECRET_KEY"
-    ) or secrets.token_hex(32)
+    app.config["SECRET_KEY"] = (
+        os.environ.get("SECRET_KEY")
+        or app.config.get("SECRET_KEY")
+        or secrets.token_hex(32)
+    )
 
     if test_config is not None:
         app.config.from_mapping(test_config)
