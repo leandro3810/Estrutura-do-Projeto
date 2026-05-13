@@ -32,3 +32,12 @@ def test_project_structure_api(client):
     assert "root" in payload
     assert "generated_at" in payload
     assert isinstance(payload.get("structure"), list)
+
+    top_level_names = {
+        item.get("name") for item in payload["structure"] if isinstance(item, dict)
+    }
+    assert "__pycache__" not in top_level_names
+    assert "node_modules" not in top_level_names
+    assert not any(
+        isinstance(name, str) and name.startswith(".") for name in top_level_names
+    )

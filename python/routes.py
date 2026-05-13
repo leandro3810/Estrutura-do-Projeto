@@ -6,12 +6,8 @@ from flask import Blueprint, jsonify, render_template
 bp = Blueprint("main", __name__)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 EXCLUDED_DIRS = {
-    ".git",
-    ".venv",
     "node_modules",
     "__pycache__",
-    ".pytest_cache",
-    ".ruff_cache",
 }
 MAX_DEPTH = 4
 
