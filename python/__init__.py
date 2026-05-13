@@ -1,4 +1,5 @@
 import os
+import secrets
 
 from flask import Flask, jsonify, render_template
 from jinja2 import TemplateNotFound
@@ -16,7 +17,9 @@ def create_app(test_config=None):
     )
 
     app.config.from_object(DevelopmentConfig)
-    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", app.config["SECRET_KEY"])
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or app.config.get(
+        "SECRET_KEY"
+    ) or secrets.token_hex(32)
 
     if test_config is not None:
         app.config.from_mapping(test_config)
@@ -42,6 +45,10 @@ def create_app(test_config=None):
     def handle_unexpected_error(error):
         if app.config.get("TESTING"):
             raise error
-        return render_template("errors/500.html", error=error), 500
+        safe_error = {
+            "code": 500,
+            "description": "Erro interno inesperado. Tente novamente mais tarde.",
+        }
+        return render_template("errors/500.html", error=safe_error), 500
 
     return app
