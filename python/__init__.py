@@ -60,7 +60,7 @@ def create_app(test_config=None):
     def handle_unexpected_error(error):
         if app.config.get("TESTING"):
             raise error
-        app.logger.error("Erro interno não tratado.")
+        app.logger.exception("Erro interno não tratado.")
         safe_error = {
             "code": 500,
             "description": "Erro interno inesperado. Tente novamente mais tarde.",
@@ -78,6 +78,7 @@ def create_app(test_config=None):
             "style-src 'self'; "
             "img-src 'self' data:; "
             "object-src 'none'; "
+            "base-uri 'self'; "
             "frame-ancestors 'none'"
         )
         return response
