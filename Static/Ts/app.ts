@@ -1,6 +1,21 @@
 const welcomeMessage = "Central inteligente do Estrutura-do-Projeto";
 
 type TopicName = "backend" | "frontend" | "automation" | "testing";
+type NodeType = "directory" | "file";
+
+type ProjectStructureNode = {
+    name: string;
+    type: NodeType;
+    children?: ProjectStructureNode[];
+};
+
+type ProjectStructureResponse = {
+    root: string;
+    generated_at: string;
+    structure: ProjectStructureNode[];
+};
+
+const STRUCTURE_REFRESH_MS = 5000;
 
 function setAgentOutput(message: string): void {
     const output = document.getElementById("ai-agent-output");
@@ -25,6 +40,67 @@ function scrollToSection(sectionId: string): void {
 
 function setFocusMode(enabled: boolean): void {
     document.body.classList.toggle("focus-mode", enabled);
+}
+
+function createStructureList(nodes: ProjectStructureNode[]): HTMLUListElement {
+    const list = document.createElement("ul");
+    list.className = "project-structure-list";
+
+    nodes.forEach((node) => {
+        const item = document.createElement("li");
+        item.className = "project-structure-item";
+
+        const label = document.createElement("span");
+        label.textContent = node.name;
+        label.className = node.type === "directory" ? "structure-label directory" : "structure-label file";
+        item.appendChild(label);
+
+        if (node.type === "directory" && node.children && node.children.length > 0) {
+            item.appendChild(createStructureList(node.children));
+        }
+
+        list.appendChild(item);
+    });
+
+    return list;
+}
+
+function formatTimestamp(value: string): string {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+        return "agora";
+    }
+    return date.toLocaleTimeString("pt-BR");
+}
+
+async function refreshProjectStructure(): Promise<void> {
+    const treeEl = document.getElementById("project-structure-tree");
+    const updatedEl = document.getElementById("project-structure-updated");
+    if (!treeEl || !updatedEl) {
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/project-structure", {
+            cache: "no-store",
+        });
+        if (!response.ok) {
+            throw new Error(`Status ${response.status}`);
+        }
+
+        const data = (await response.json()) as ProjectStructureResponse;
+        treeEl.innerHTML = "";
+
+        const rootTitle = document.createElement("p");
+        rootTitle.className = "project-structure-root";
+        rootTitle.textContent = data.root;
+        treeEl.appendChild(rootTitle);
+        treeEl.appendChild(createStructureList(data.structure));
+
+        updatedEl.textContent = `Atualizado às ${formatTimestamp(data.generated_at)} (auto a cada 5s).`;
+    } catch {
+        updatedEl.textContent = "Não foi possível atualizar a estrutura em tempo real.";
+    }
 }
 
 function processAgentCommand(rawCommand: string): void {
@@ -66,6 +142,12 @@ function processAgentCommand(rawCommand: string): void {
     if (command.includes("deploy") || command.includes("pages") || command.includes("rodar")) {
         scrollToSection("deploy");
         setAgentOutput("Painel de execução aberto: veja setup, build e comando do servidor Flask.");
+        return;
+    }
+
+    if (command.includes("estrutura") || command.includes("tempo real")) {
+        scrollToSection("estrutura-tempo-real");
+        setAgentOutput("Estrutura do projeto em tempo real aberta com atualização automática.");
         return;
     }
 
@@ -125,4 +207,9 @@ document.addEventListener("DOMContentLoaded", () => {
             processAgentCommand(command);
         });
     });
+
+    refreshProjectStructure();
+    window.setInterval(() => {
+        void refreshProjectStructure();
+    }, STRUCTURE_REFRESH_MS);
 });
