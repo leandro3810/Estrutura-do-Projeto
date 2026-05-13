@@ -22,6 +22,9 @@ def create_app(test_config=None):
         or app.config.get("SECRET_KEY")
         or secrets.token_hex(32)
     )
+    app.config["SESSION_COOKIE_SECURE"] = (
+        os.environ.get("SESSION_COOKIE_SECURE", "0") == "1"
+    )
 
     if test_config is not None:
         app.config.from_mapping(test_config)
@@ -47,10 +50,26 @@ def create_app(test_config=None):
     def handle_unexpected_error(error):
         if app.config.get("TESTING"):
             raise error
+        app.logger.exception("Erro interno não tratado: %s", error)
         safe_error = {
             "code": 500,
             "description": "Erro interno inesperado. Tente novamente mais tarde.",
         }
         return render_template("errors/500.html", error=safe_error), 500
+
+    @app.after_request
+    def apply_security_headers(response):
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; "
+            "script-src 'self'; "
+            "style-src 'self'; "
+            "img-src 'self' data:; "
+            "object-src 'none'; "
+            "frame-ancestors 'none'"
+        )
+        return response
 
     return app

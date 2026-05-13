@@ -31,6 +31,14 @@ jobs:
       - name: Setup environment
         run: bash scripts/setup.sh
 
+      - name: Check Python dependencies integrity
+        run: |
+          source .venv/bin/activate
+          pip check
+
+      - name: Audit npm dependencies (high severity)
+        run: npm audit --audit-level=high
+
       - name: Lint Python
         run: bash scripts/lint.sh
 

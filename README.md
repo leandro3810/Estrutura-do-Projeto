@@ -52,6 +52,7 @@ O script cria `.venv`, instala dependências Python e Node/TypeScript.
 2. **Build TS:** `npm run build`
 3. **Executar Flask:** `flask --app python/Run.py run --debug`
 4. **Qualidade:** `bash scripts/lint.sh && bash scripts/test.sh`
+5. **Segurança de dependências:** `source .venv/bin/activate && pip check && npm audit --audit-level=high`
 
 ## 5) Backend (Flask)
 
@@ -83,7 +84,16 @@ O script cria `.venv`, instala dependências Python e Node/TypeScript.
 ## 9) Segurança e Governança
 
 - Defina `SECRET_KEY` no ambiente de execução.
+- Para produção, defina também `SESSION_COOKIE_SECURE=1`.
+- O app aplica cabeçalhos de segurança por padrão:
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: DENY`
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+  - `Content-Security-Policy` restritiva para recursos locais
 - Revise dependências periodicamente.
+- Valide dependências com:
+  - `source .venv/bin/activate && pip check`
+  - `npm audit --audit-level=high`
 - Mantenha:
   - `SECURITY.md`
   - `CODE_OF_CONDUCT.md`
