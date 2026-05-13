@@ -12,6 +12,7 @@
                 Um site mais organizado para apresentar todo o código do projeto, sua arquitetura
                 e uma central com agente de IA para ajudar no controle da navegação e dos destaques.
             </p>
+            <p class="hero-text"><strong>Última atualização:</strong> {{ overview.updated_at }}</p>
             <div class="hero-actions">
                 <a class="primary-action" href="#codigo">Explorar código</a>
                 <a class="secondary-action" href="#agente-ia">Usar agente IA</a>
@@ -60,7 +61,7 @@
             <article class="stack-item" data-topic="automation">
                 <h3>Automação</h3>
                 <p>Configuração do ambiente, lint, testes e inicialização com scripts reutilizáveis.</p>
-                <span>scripts/ · configurar-ambiente.sh</span>
+                <span>scripts/ · setup/lint/test</span>
             </article>
             <article class="stack-item" data-topic="testing">
                 <h3>Qualidade</h3>
@@ -93,6 +94,14 @@
                 </ul>
             </article>
             <article class="code-map-card">
+                <h3>MVP Atual</h3>
+                <ul>
+                    {% for feature in overview.mvp_features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            </article>
+            <article class="code-map-card">
                 <h3>Validação</h3>
                 <ul>
                     <li><strong>scripts/setup.sh</strong> prepara o ambiente</li>
@@ -102,18 +111,12 @@
             </article>
         </div>
         <div class="command-panel" id="deploy">
+            {% for command in overview.build_steps %}
             <div class="command-block">
-                <span class="command-label">Setup</span>
-                <code>bash scripts/setup.sh</code>
+                <span class="command-label">Etapa {{ loop.index }}</span>
+                <code>{{ command }}</code>
             </div>
-            <div class="command-block">
-                <span class="command-label">Build frontend</span>
-                <code>npm run build</code>
-            </div>
-            <div class="command-block">
-                <span class="command-label">Servidor Flask</span>
-                <code>flask --app python/Run.py run --debug</code>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
