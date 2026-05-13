@@ -37,6 +37,7 @@ jobs:
           pip check
 
       - name: Audit npm dependencies (high severity)
+        # Falhas aqui devem ser tratadas atualizando/removendo dependências vulneráveis.
         run: npm audit --audit-level=high
 
       - name: Lint Python

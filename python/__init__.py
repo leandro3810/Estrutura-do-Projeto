@@ -5,7 +5,7 @@ from flask import Flask, jsonify, render_template
 from jinja2 import TemplateNotFound
 from werkzeug.exceptions import HTTPException
 
-from python.config import DevelopmentConfig
+from python.config import BaseConfig, DevelopmentConfig
 
 
 def create_app(test_config=None):
@@ -16,18 +16,28 @@ def create_app(test_config=None):
         static_folder="../Static",
     )
 
-    app.config.from_object(DevelopmentConfig)
-    app.config["SECRET_KEY"] = (
-        os.environ.get("SECRET_KEY")
-        or app.config.get("SECRET_KEY")
-        or secrets.token_hex(32)
-    )
-    app.config["SESSION_COOKIE_SECURE"] = (
-        os.environ.get("SESSION_COOKIE_SECURE", "0") == "1"
-    )
+    flask_env = os.environ.get("FLASK_ENV", "development").lower()
+    config_class = DevelopmentConfig if flask_env == "development" else BaseConfig
+    app.config.from_object(config_class)
 
     if test_config is not None:
         app.config.from_mapping(test_config)
+
+    env_secret = os.environ.get("SECRET_KEY")
+    config_secret = app.config.get("SECRET_KEY")
+    if env_secret:
+        app.config["SECRET_KEY"] = env_secret
+    elif config_secret:
+        app.config["SECRET_KEY"] = config_secret
+    elif app.config.get("DEBUG") or app.config.get("TESTING"):
+        app.config["SECRET_KEY"] = secrets.token_hex(32)
+    else:
+        raise RuntimeError("SECRET_KEY obrigatório fora de desenvolvimento/teste.")
+
+    if "SESSION_COOKIE_SECURE" in os.environ:
+        app.config["SESSION_COOKIE_SECURE"] = (
+            os.environ.get("SESSION_COOKIE_SECURE") == "1"
+        )
 
     # Registrar Blueprint de rotas
     from python.routes import bp
@@ -50,7 +60,7 @@ def create_app(test_config=None):
     def handle_unexpected_error(error):
         if app.config.get("TESTING"):
             raise error
-        app.logger.exception("Erro interno não tratado: %s", error)
+        app.logger.error("Erro interno não tratado.")
         safe_error = {
             "code": 500,
             "description": "Erro interno inesperado. Tente novamente mais tarde.",

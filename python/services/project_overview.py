@@ -14,7 +14,7 @@ def get_project_overview():
         "build_steps": [
             "bash scripts/setup.sh",
             "npm run build",
-            "flask --app python/Run.py run --debug",
+            "flask --app python/Run.py run",
             "bash scripts/lint.sh && bash scripts/test.sh",
         ],
     }

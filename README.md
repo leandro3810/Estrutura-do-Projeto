@@ -50,7 +50,7 @@ O script cria `.venv`, instala dependências Python e Node/TypeScript.
 
 1. **Setup:** `bash scripts/setup.sh`
 2. **Build TS:** `npm run build`
-3. **Executar Flask:** `flask --app python/Run.py run --debug`
+3. **Executar Flask:** `flask --app python/Run.py run`
 4. **Qualidade:** `bash scripts/lint.sh && bash scripts/test.sh`
 5. **Segurança de dependências:** `source .venv/bin/activate && pip check && npm audit --audit-level=high`
 
