@@ -14,6 +14,8 @@
             permitindo apresentar o código, navegar pelas seções do site e evoluir a aplicação com
             uma base mais clara para manutenção.
         </p>
+        <p><strong>Status do build:</strong> fluxo único definido e ativo.</p>
+        <p><strong>Atualizado em:</strong> {{ overview.updated_at }}</p>
         <div class="code-map-grid">
             <article class="code-map-card">
                 <h3>Objetivo</h3>
@@ -26,6 +28,14 @@
             <article class="code-map-card">
                 <h3>Evolução</h3>
                 <p>A estrutura está pronta para receber novas páginas, integrações e automações futuras.</p>
+            </article>
+            <article class="code-map-card">
+                <h3>Funcionalidades MVP</h3>
+                <ul>
+                    {% for feature in overview.mvp_features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
             </article>
         </div>
     </section>
