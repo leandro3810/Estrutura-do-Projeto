@@ -15,7 +15,7 @@ type ProjectStructureResponse = {
     structure: ProjectStructureNode[];
 };
 
-const STRUCTURE_REFRESH_MS = 5000;
+const STRUCTURE_REFRESH_MS = 10000;
 const STRUCTURE_REFRESH_SECONDS = STRUCTURE_REFRESH_MS / 1000;
 
 function setAgentOutput(message: string): void {
