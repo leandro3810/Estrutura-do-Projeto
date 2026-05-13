@@ -69,18 +69,22 @@ def create_app(test_config=None):
 
     @app.after_request
     def apply_security_headers(response):
+        csp_directives = [
+            "default-src 'self'",
+            "script-src 'self'",
+            "style-src 'self'",
+            "img-src 'self' data:",
+            "object-src 'none'",
+            "base-uri 'self'",
+            "frame-ancestors 'none'",
+        ]
+        if not app.config.get("DEBUG"):
+            csp_directives.append("upgrade-insecure-requests")
+
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-        response.headers["Content-Security-Policy"] = (
-            "default-src 'self'; "
-            "script-src 'self'; "
-            "style-src 'self'; "
-            "img-src 'self' data:; "
-            "object-src 'none'; "
-            "base-uri 'self'; "
-            "frame-ancestors 'none'"
-        )
+        response.headers["Content-Security-Policy"] = "; ".join(csp_directives)
         return response
 
     return app
