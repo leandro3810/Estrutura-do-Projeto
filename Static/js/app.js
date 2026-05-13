@@ -1,6 +1,7 @@
 "use strict";
 const welcomeMessage = "Central inteligente do Estrutura-do-Projeto";
 const STRUCTURE_REFRESH_MS = 5000;
+const STRUCTURE_REFRESH_SECONDS = STRUCTURE_REFRESH_MS / 1000;
 function setAgentOutput(message) {
     const output = document.getElementById("ai-agent-output");
     if (output) {
@@ -66,7 +67,7 @@ async function refreshProjectStructure() {
         rootTitle.textContent = data.root;
         treeEl.appendChild(rootTitle);
         treeEl.appendChild(createStructureList(data.structure));
-        updatedEl.textContent = `Atualizado às ${formatTimestamp(data.generated_at)} (auto a cada 5s).`;
+        updatedEl.textContent = `Atualizado às ${formatTimestamp(data.generated_at)} (auto a cada ${STRUCTURE_REFRESH_SECONDS}s).`;
     }
     catch (_a) {
         updatedEl.textContent = "Não foi possível atualizar a estrutura em tempo real.";

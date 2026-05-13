@@ -16,6 +16,7 @@ type ProjectStructureResponse = {
 };
 
 const STRUCTURE_REFRESH_MS = 5000;
+const STRUCTURE_REFRESH_SECONDS = STRUCTURE_REFRESH_MS / 1000;
 
 function setAgentOutput(message: string): void {
     const output = document.getElementById("ai-agent-output");
@@ -97,7 +98,7 @@ async function refreshProjectStructure(): Promise<void> {
         treeEl.appendChild(rootTitle);
         treeEl.appendChild(createStructureList(data.structure));
 
-        updatedEl.textContent = `Atualizado às ${formatTimestamp(data.generated_at)} (auto a cada 5s).`;
+        updatedEl.textContent = `Atualizado às ${formatTimestamp(data.generated_at)} (auto a cada ${STRUCTURE_REFRESH_SECONDS}s).`;
     } catch {
         updatedEl.textContent = "Não foi possível atualizar a estrutura em tempo real.";
     }

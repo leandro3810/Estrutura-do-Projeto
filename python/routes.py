@@ -23,7 +23,7 @@ def about():
 
 
 def _build_tree(path: Path, depth: int = 0) -> list[dict[str, object]]:
-    if depth > MAX_DEPTH:
+    if depth >= MAX_DEPTH:
         return []
 
     items: list[dict[str, object]] = []
