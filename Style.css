@@ -296,6 +296,43 @@ h3 {
     line-height: 1.6;
 }
 
+.project-structure-tree {
+    background: var(--surface-strong);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    overflow-x: auto;
+}
+
+.project-structure-root {
+    margin: 0 0 10px;
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.project-structure-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.project-structure-item {
+    margin: 6px 0;
+}
+
+.structure-label {
+    font-family: "Consolas", "Monaco", monospace;
+    font-size: 0.92rem;
+}
+
+.structure-label.directory {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.structure-label.file {
+    color: var(--muted);
+}
+
 .site-footer {
     padding: 20px;
     text-align: center;
