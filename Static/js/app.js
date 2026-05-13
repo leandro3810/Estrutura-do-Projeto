@@ -1,5 +1,6 @@
 "use strict";
 const welcomeMessage = "Central inteligente do Estrutura-do-Projeto";
+const STRUCTURE_REFRESH_MS = 5000;
 function setAgentOutput(message) {
     const output = document.getElementById("ai-agent-output");
     if (output) {
@@ -20,6 +21,56 @@ function scrollToSection(sectionId) {
 }
 function setFocusMode(enabled) {
     document.body.classList.toggle("focus-mode", enabled);
+}
+function createStructureList(nodes) {
+    const list = document.createElement("ul");
+    list.className = "project-structure-list";
+    nodes.forEach((node) => {
+        const item = document.createElement("li");
+        item.className = "project-structure-item";
+        const label = document.createElement("span");
+        label.textContent = node.name;
+        label.className = node.type === "directory" ? "structure-label directory" : "structure-label file";
+        item.appendChild(label);
+        if (node.type === "directory" && node.children && node.children.length > 0) {
+            item.appendChild(createStructureList(node.children));
+        }
+        list.appendChild(item);
+    });
+    return list;
+}
+function formatTimestamp(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+        return "agora";
+    }
+    return date.toLocaleTimeString("pt-BR");
+}
+async function refreshProjectStructure() {
+    const treeEl = document.getElementById("project-structure-tree");
+    const updatedEl = document.getElementById("project-structure-updated");
+    if (!treeEl || !updatedEl) {
+        return;
+    }
+    try {
+        const response = await fetch("/api/project-structure", {
+            cache: "no-store",
+        });
+        if (!response.ok) {
+            throw new Error(`Status ${response.status}`);
+        }
+        const data = (await response.json());
+        treeEl.innerHTML = "";
+        const rootTitle = document.createElement("p");
+        rootTitle.className = "project-structure-root";
+        rootTitle.textContent = data.root;
+        treeEl.appendChild(rootTitle);
+        treeEl.appendChild(createStructureList(data.structure));
+        updatedEl.textContent = `Atualizado às ${formatTimestamp(data.generated_at)} (auto a cada 5s).`;
+    }
+    catch (_a) {
+        updatedEl.textContent = "Não foi possível atualizar a estrutura em tempo real.";
+    }
 }
 function processAgentCommand(rawCommand) {
     const command = rawCommand.trim().toLowerCase();
@@ -54,6 +105,11 @@ function processAgentCommand(rawCommand) {
     if (command.includes("deploy") || command.includes("pages") || command.includes("rodar")) {
         scrollToSection("deploy");
         setAgentOutput("Painel de execução aberto: veja setup, build e comando do servidor Flask.");
+        return;
+    }
+    if (command.includes("estrutura") || command.includes("tempo real")) {
+        scrollToSection("estrutura-tempo-real");
+        setAgentOutput("Estrutura do projeto em tempo real aberta com atualização automática.");
         return;
     }
     if (command.includes("foco")) {
@@ -105,4 +161,8 @@ document.addEventListener("DOMContentLoaded", () => {
             processAgentCommand(command);
         });
     });
+    refreshProjectStructure();
+    window.setInterval(() => {
+        void refreshProjectStructure();
+    }, STRUCTURE_REFRESH_MS);
 });
