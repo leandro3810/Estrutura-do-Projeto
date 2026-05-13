@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Lint, Test and Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Setup environment
+        run: bash scripts/setup.sh
+
+      - name: Check Python dependencies integrity
+        run: |
+          source .venv/bin/activate
+          pip check
+
+      - name: Audit npm dependencies (high severity)
+        # Falhas aqui devem ser tratadas atualizando/removendo dependências vulneráveis.
+        run: npm audit --audit-level=high
+
+      - name: Lint Python
+        run: bash scripts/lint.sh
+
+      - name: Test Python
+        run: bash scripts/test.sh
+
+      - name: Build TypeScript
+        run: npm run build:check
