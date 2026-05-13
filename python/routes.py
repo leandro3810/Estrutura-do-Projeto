@@ -50,6 +50,8 @@ def _build_tree(path: Path, depth: int = 0) -> list[dict[str, object]]:
     for entry in entries:
         if entry.name in EXCLUDED_DIRS:
             continue
+        # Mantém ocultos fora da árvore por padrão,
+        # mesmo se não listados em EXCLUDED_DIRS.
         if entry.name.startswith("."):
             continue
 

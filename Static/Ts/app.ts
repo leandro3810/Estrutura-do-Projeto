@@ -17,6 +17,7 @@ type ProjectStructureResponse = {
 
 const STRUCTURE_REFRESH_MS = 10000;
 const STRUCTURE_REFRESH_SECONDS = STRUCTURE_REFRESH_MS / 1000;
+let structureRefreshIntervalId: number | undefined;
 
 function setAgentOutput(message: string): void {
     const output = document.getElementById("ai-agent-output");
@@ -69,9 +70,9 @@ function createStructureList(nodes: ProjectStructureNode[]): HTMLUListElement {
 function formatTimestamp(value: string): string {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) {
-        return "agora";
+        return "data inválida";
     }
-    return date.toLocaleTimeString("pt-BR");
+    return date.toLocaleString("pt-BR");
 }
 
 async function refreshProjectStructure(): Promise<void> {
@@ -210,7 +211,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     refreshProjectStructure();
-    window.setInterval(() => {
-        void refreshProjectStructure();
-    }, STRUCTURE_REFRESH_MS);
+    if (!structureRefreshIntervalId) {
+        structureRefreshIntervalId = window.setInterval(() => {
+            void refreshProjectStructure();
+        }, STRUCTURE_REFRESH_MS);
+    }
 });

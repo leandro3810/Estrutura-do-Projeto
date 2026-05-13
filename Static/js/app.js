@@ -2,6 +2,7 @@
 const welcomeMessage = "Central inteligente do Estrutura-do-Projeto";
 const STRUCTURE_REFRESH_MS = 10000;
 const STRUCTURE_REFRESH_SECONDS = STRUCTURE_REFRESH_MS / 1000;
+let structureRefreshIntervalId;
 function setAgentOutput(message) {
     const output = document.getElementById("ai-agent-output");
     if (output) {
@@ -43,9 +44,9 @@ function createStructureList(nodes) {
 function formatTimestamp(value) {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) {
-        return "agora";
+        return "data inválida";
     }
-    return date.toLocaleTimeString("pt-BR");
+    return date.toLocaleString("pt-BR");
 }
 async function refreshProjectStructure() {
     const treeEl = document.getElementById("project-structure-tree");
@@ -163,7 +164,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
     refreshProjectStructure();
-    window.setInterval(() => {
-        void refreshProjectStructure();
-    }, STRUCTURE_REFRESH_MS);
+    if (!structureRefreshIntervalId) {
+        structureRefreshIntervalId = window.setInterval(() => {
+            void refreshProjectStructure();
+        }, STRUCTURE_REFRESH_MS);
+    }
 });
