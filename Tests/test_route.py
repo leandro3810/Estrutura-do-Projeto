@@ -11,6 +11,24 @@ def client():
         yield client
 
 
+def test_vary_cookie_added_when_session_accessed_via_request_context():
+    """Garante Vary: Cookie quando sessão é acessada via request context."""
+    app = create_app({"TESTING": True, "SECRET_KEY": "test"})
+
+    @app.route("/session-request-context")
+    def session_request_context():
+        from flask.globals import request_ctx
+
+        _ = request_ctx.session
+        return "ok"
+
+    with app.test_client() as local_client:
+        response = local_client.get("/session-request-context")
+
+    assert response.status_code == 200
+    assert "Cookie" in response.vary
+
+
 def test_home(client):
     """Teste para garantir que a rota principal está funcionando."""
     response = client.get("/")
