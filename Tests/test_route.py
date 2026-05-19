@@ -65,3 +65,11 @@ def test_security_headers_present(client):
     assert response.headers["X-Content-Type-Options"] == "nosniff"
     assert response.headers["X-Frame-Options"] == "DENY"
     assert "default-src 'self'" in response.headers["Content-Security-Policy"]
+
+
+@pytest.mark.parametrize("path", ["/", "/about", "/api/project-structure", "/health"])
+def test_vary_cookie_header_present(client, path):
+    """Vary: Cookie deve estar presente em todas as rotas."""
+    response = client.get(path)
+    vary = response.headers.get("Vary", "")
+    assert "Cookie" in vary, f"Vary: Cookie ausente na rota {path}"

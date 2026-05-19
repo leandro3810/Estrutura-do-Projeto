@@ -85,6 +85,7 @@ def create_app(test_config=None):
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Content-Security-Policy"] = "; ".join(csp_directives)
+        response.vary.add("Cookie")
         return response
 
     return app
