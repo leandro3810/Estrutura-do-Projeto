@@ -13,33 +13,69 @@ jobs:
     permissions:
       issues: write
       contents: read
+    env:
+      REPORT_TITLE: Relatório Diário: Issues Pendentes
     
     steps:
       - name: Fetch Open Issues Count
         id: fetch_issues
         run: |
-          QUERY='query($name: String!, $owner: String!) {
-            repository(owner: $owner, name: $name) {
-              issues(states: OPEN) {
-                totalCount
+          SEARCH_QUERY="repo:${GITHUB_REPOSITORY} is:issue is:open"
+          TOTAL_OPEN_ISSUES=$(gh api graphql \
+            -f query='query($searchQuery: String!) {
+              search(type: ISSUE, query: $searchQuery, first: 1) {
+                issueCount
               }
-            }
-          }'
-          
-          TOTAL_COUNT=$(gh api graphql -F owner="$OWNER" -F name="$REPO" -f query="$QUERY" --jq '.data.repository.issues.totalCount')
-          echo "NUM_OPEN_ISSUES=$TOTAL_COUNT" >> "$GITHUB_ENV"
+            }' \
+            -F searchQuery="$SEARCH_QUERY" \
+            --jq '.data.search.issueCount')
+
+          REPORT_ISSUES=$(gh issue list \
+            --repo "$GITHUB_REPOSITORY" \
+            --state open \
+            --search "in:title \"${REPORT_TITLE}\"" \
+            --json number,title | jq -r --arg title "$REPORT_TITLE" '.[] | select(.title == $title) | .number')
+          if [ -n "$REPORT_ISSUES" ]; then
+            OPEN_REPORT_ISSUES=$(printf '%s\n' "$REPORT_ISSUES" | wc -l | tr -d ' ')
+          else
+            OPEN_REPORT_ISSUES=0
+          fi
+
+          NUM_PENDING_ISSUES=$((TOTAL_OPEN_ISSUES - OPEN_REPORT_ISSUES))
+          # Proteção defensiva contra condição de corrida entre leitura das contagens e mudanças concorrentes de issues.
+          if [ "$NUM_PENDING_ISSUES" -lt 0 ]; then
+            NUM_PENDING_ISSUES=0
+          fi
+
+          echo "NUM_PENDING_ISSUES=$NUM_PENDING_ISSUES" >> "$GITHUB_ENV"
+          {
+            echo "REPORT_ISSUES<<EOF"
+            echo "$REPORT_ISSUES"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
 
       - name: Create Issue Report
+        if: env.NUM_PENDING_ISSUES != '0'
         run: |
           gh issue create \
-            --title "Relatório Diário: Issues Pendentes" \
-            --body "O repositório possui atualmente **$NUM_OPEN_ISSUES** issues abertas. 
-            
+            --title "$REPORT_TITLE" \
+            --body "O repositório possui atualmente **$NUM_PENDING_ISSUES** issues abertas (excluindo o relatório automático). 
+
             Este é um relatório automático gerado em $(date +'%d/%m/%Y %H:%M:%S')." \
             --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Close stale report issues when there are no pending issues
+        if: env.NUM_PENDING_ISSUES == '0'
+        run: |
+          while IFS= read -r ISSUE_NUMBER; do
+            [ -z "$ISSUE_NUMBER" ] && continue
+            gh issue close "$ISSUE_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --comment "Fechamento automático: não há issues pendentes além do próprio relatório."
+          done <<< "$REPORT_ISSUES"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

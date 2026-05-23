@@ -78,7 +78,7 @@ O script cria `.venv`, instala dependências Python e Node/TypeScript.
 ## 8) CI/CD
 
 - CI de validação em PR/push para main: `.github/workflows/ci.yml`
-- Workflow agendado de issues: `.github/workflows/report-issues.yaml`
+- Workflow agendado de issues: `.github/workflows/report-issues.yaml` (ignora o próprio relatório e fecha relatório antigo quando não há pendências)
 - Recomenda-se branch protection exigindo os checks de CI antes de merge
 
 ## 9) Segurança e Governança
