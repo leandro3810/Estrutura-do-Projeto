@@ -13,17 +13,22 @@ jobs:
     permissions:
       issues: write
       contents: read
+    env:
+      REPORT_TITLE: Relatório Diário: Issues Pendentes
     
     steps:
       - name: Fetch Open Issues Count
         id: fetch_issues
         run: |
-          NUM_PENDING_ISSUES=$(gh issue list \
-            --repo "$GITHUB_REPOSITORY" \
-            --state open \
-            --limit 1000 \
-            --json title \
-            --jq '[.[] | select(.title != "Relatório Diário: Issues Pendentes")] | length')
+          SEARCH_QUERY="repo:${GITHUB_REPOSITORY} is:issue is:open -in:title \"${REPORT_TITLE}\""
+          NUM_PENDING_ISSUES=$(gh api graphql \
+            -f query='query($searchQuery: String!) {
+              search(type: ISSUE, query: $searchQuery, first: 1) {
+                issueCount
+              }
+            }' \
+            -F searchQuery="$SEARCH_QUERY" \
+            --jq '.data.search.issueCount')
 
           echo "NUM_PENDING_ISSUES=$NUM_PENDING_ISSUES" >> "$GITHUB_ENV"
         env:
@@ -33,7 +38,7 @@ jobs:
         if: env.NUM_PENDING_ISSUES != '0'
         run: |
           gh issue create \
-            --title "Relatório Diário: Issues Pendentes" \
+            --title "$REPORT_TITLE" \
             --body "O repositório possui atualmente **$NUM_PENDING_ISSUES** issues pendentes. 
 
             Este é um relatório automático gerado em $(date +'%d/%m/%Y %H:%M:%S')." \
@@ -47,9 +52,9 @@ jobs:
           REPORT_ISSUES=$(gh issue list \
             --repo "$GITHUB_REPOSITORY" \
             --state open \
-            --search '"Relatório Diário: Issues Pendentes" in:title' \
+            --search "\"${REPORT_TITLE}\" in:title" \
             --json number,title \
-            --jq '.[] | select(.title == "Relatório Diário: Issues Pendentes") | .number')
+            --jq '.[] | select(.title == env.REPORT_TITLE) | .number')
 
           if [ -z "$REPORT_ISSUES" ]; then
             echo "No open report issue found."
