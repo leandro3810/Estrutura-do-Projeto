@@ -18,28 +18,49 @@ jobs:
       - name: Fetch Open Issues Count
         id: fetch_issues
         run: |
-          QUERY='query($name: String!, $owner: String!) {
-            repository(owner: $owner, name: $name) {
-              issues(states: OPEN) {
-                totalCount
-              }
-            }
-          }'
-          
-          TOTAL_COUNT=$(gh api graphql -F owner="$OWNER" -F name="$REPO" -f query="$QUERY" --jq '.data.repository.issues.totalCount')
-          echo "NUM_OPEN_ISSUES=$TOTAL_COUNT" >> "$GITHUB_ENV"
+          NUM_PENDING_ISSUES=$(gh issue list \
+            --repo "$GITHUB_REPOSITORY" \
+            --state open \
+            --limit 1000 \
+            --json title \
+            --jq '[.[] | select(.title != "Relatório Diário: Issues Pendentes")] | length')
+
+          echo "NUM_PENDING_ISSUES=$NUM_PENDING_ISSUES" >> "$GITHUB_ENV"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
 
       - name: Create Issue Report
+        if: env.NUM_PENDING_ISSUES != '0'
         run: |
           gh issue create \
             --title "Relatório Diário: Issues Pendentes" \
-            --body "O repositório possui atualmente **$NUM_OPEN_ISSUES** issues abertas. 
-            
+            --body "O repositório possui atualmente **$NUM_PENDING_ISSUES** issues pendentes. 
+
             Este é um relatório automático gerado em $(date +'%d/%m/%Y %H:%M:%S')." \
             --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Close stale report issues when there are no pending issues
+        if: env.NUM_PENDING_ISSUES == '0'
+        run: |
+          REPORT_ISSUES=$(gh issue list \
+            --repo "$GITHUB_REPOSITORY" \
+            --state open \
+            --search '"Relatório Diário: Issues Pendentes" in:title' \
+            --json number,title \
+            --jq '.[] | select(.title == "Relatório Diário: Issues Pendentes") | .number')
+
+          if [ -z "$REPORT_ISSUES" ]; then
+            echo "No open report issue found."
+            exit 0
+          fi
+
+          while IFS= read -r ISSUE_NUMBER; do
+            [ -z "$ISSUE_NUMBER" ] && continue
+            gh issue close "$ISSUE_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --comment "Fechamento automático: não há issues pendentes além do próprio relatório."
+          done <<< "$REPORT_ISSUES"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
