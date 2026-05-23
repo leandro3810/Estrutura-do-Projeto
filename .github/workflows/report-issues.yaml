@@ -42,7 +42,7 @@ jobs:
           fi
 
           NUM_PENDING_ISSUES=$((TOTAL_OPEN_ISSUES - OPEN_REPORT_ISSUES))
-          # Defensiva para janela de corrida entre leitura das contagens e mudanças concorrentes de issues.
+          # Proteção defensiva contra condição de corrida entre leitura das contagens e mudanças concorrentes de issues.
           if [ "$NUM_PENDING_ISSUES" -lt 0 ]; then
             NUM_PENDING_ISSUES=0
           fi
@@ -61,7 +61,7 @@ jobs:
         run: |
           gh issue create \
             --title "$REPORT_TITLE" \
-            --body "O repositório possui atualmente **$NUM_PENDING_ISSUES** issues abertos (excluindo o relatório automático). 
+            --body "O repositório possui atualmente **$NUM_PENDING_ISSUES** issues abertas (excluindo o relatório automático). 
 
             Este é um relatório automático gerado em $(date +'%d/%m/%Y %H:%M:%S')." \
             --repo "$GITHUB_REPOSITORY"
