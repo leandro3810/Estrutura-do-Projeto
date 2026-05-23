@@ -14,7 +14,7 @@ jobs:
       issues: write
       contents: read
     env:
-      REPORT_TITLE: Relatório Diário: Issues Pendentes
+      REPORT_TITLE: "Relatório Diário: Issues Pendentes"
     
     steps:
       - name: Fetch Open Issues Count
