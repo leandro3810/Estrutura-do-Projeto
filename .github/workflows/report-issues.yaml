@@ -33,12 +33,16 @@ jobs:
           REPORT_ISSUES=$(gh issue list \
             --repo "$GITHUB_REPOSITORY" \
             --state open \
-            --search "\"${REPORT_TITLE}\"" \
+            --search "in:title \"${REPORT_TITLE}\"" \
             --json number,title | jq -r --arg title "$REPORT_TITLE" '.[] | select(.title == $title) | .number')
-          OPEN_REPORT_ISSUES=$(printf '%s\n' "$REPORT_ISSUES" | sed '/^$/d' | wc -l | tr -d ' ')
+          if [ -n "$REPORT_ISSUES" ]; then
+            OPEN_REPORT_ISSUES=$(printf '%s\n' "$REPORT_ISSUES" | wc -l | tr -d ' ')
+          else
+            OPEN_REPORT_ISSUES=0
+          fi
 
           NUM_PENDING_ISSUES=$((TOTAL_OPEN_ISSUES - OPEN_REPORT_ISSUES))
-          # Defensivo para janela de corrida entre leitura das contagens e mudanças concorrentes de issues.
+          # Defensiva para janela de corrida entre leitura das contagens e mudanças concorrentes de issues.
           if [ "$NUM_PENDING_ISSUES" -lt 0 ]; then
             NUM_PENDING_ISSUES=0
           fi
@@ -57,7 +61,7 @@ jobs:
         run: |
           gh issue create \
             --title "$REPORT_TITLE" \
-            --body "O repositório possui atualmente **$NUM_PENDING_ISSUES** issues abertas (excluindo o relatório automático). 
+            --body "O repositório possui atualmente **$NUM_PENDING_ISSUES** issues abertos (excluindo o relatório automático). 
 
             Este é um relatório automático gerado em $(date +'%d/%m/%Y %H:%M:%S')." \
             --repo "$GITHUB_REPOSITORY"
