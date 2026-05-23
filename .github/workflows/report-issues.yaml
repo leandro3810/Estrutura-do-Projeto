@@ -20,8 +20,8 @@ jobs:
       - name: Fetch Open Issues Count
         id: fetch_issues
         run: |
-          SEARCH_QUERY="repo:${GITHUB_REPOSITORY} is:issue is:open -in:title \"${REPORT_TITLE}\""
-          NUM_PENDING_ISSUES=$(gh api graphql \
+          SEARCH_QUERY="repo:${GITHUB_REPOSITORY} is:issue is:open"
+          TOTAL_OPEN_ISSUES=$(gh api graphql \
             -f query='query($searchQuery: String!) {
               search(type: ISSUE, query: $searchQuery, first: 1) {
                 issueCount
@@ -29,6 +29,17 @@ jobs:
             }' \
             -F searchQuery="$SEARCH_QUERY" \
             --jq '.data.search.issueCount')
+
+          OPEN_REPORT_ISSUES=$(gh issue list \
+            --repo "$GITHUB_REPOSITORY" \
+            --state open \
+            --search "\"${REPORT_TITLE}\" in:title" \
+            --json title | jq -r --arg title "$REPORT_TITLE" '[.[] | select(.title == $title)] | length')
+
+          NUM_PENDING_ISSUES=$((TOTAL_OPEN_ISSUES - OPEN_REPORT_ISSUES))
+          if [ "$NUM_PENDING_ISSUES" -lt 0 ]; then
+            NUM_PENDING_ISSUES=0
+          fi
 
           echo "NUM_PENDING_ISSUES=$NUM_PENDING_ISSUES" >> "$GITHUB_ENV"
         env:
@@ -54,11 +65,6 @@ jobs:
             --state open \
             --search "\"${REPORT_TITLE}\" in:title" \
             --json number,title | jq -r --arg title "$REPORT_TITLE" '.[] | select(.title == $title) | .number')
-
-          if [ -z "$REPORT_ISSUES" ]; then
-            echo "No open report issue found."
-            exit 0
-          fi
 
           while IFS= read -r ISSUE_NUMBER; do
             [ -z "$ISSUE_NUMBER" ] && continue
