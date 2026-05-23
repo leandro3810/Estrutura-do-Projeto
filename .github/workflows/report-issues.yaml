@@ -39,7 +39,7 @@ jobs:
         run: |
           gh issue create \
             --title "$REPORT_TITLE" \
-            --body "O repositório possui atualmente **$NUM_PENDING_ISSUES** issues pendentes. 
+            --body "O repositório possui atualmente **$NUM_PENDING_ISSUES** issues abertas (excluindo o relatório automático). 
 
             Este é um relatório automático gerado em $(date +'%d/%m/%Y %H:%M:%S')." \
             --repo "$GITHUB_REPOSITORY"
@@ -53,8 +53,7 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --state open \
             --search "\"${REPORT_TITLE}\" in:title" \
-            --json number,title \
-            --jq '.[] | select(.title == env.REPORT_TITLE) | .number')
+            --json number,title | jq -r --arg title "$REPORT_TITLE" '.[] | select(.title == $title) | .number')
 
           if [ -z "$REPORT_ISSUES" ]; then
             echo "No open report issue found."
