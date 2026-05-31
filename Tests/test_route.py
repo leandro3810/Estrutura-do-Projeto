@@ -69,6 +69,38 @@ def test_health(client):
     assert response.json == {"status": "ok", "service": "estrutura-do-projeto"}
 
 
+def test_enterprise_automation_api(client):
+    """Garante retorno da visão de automação empresarial."""
+    response = client.get("/api/enterprise/automation")
+    assert response.status_code == 200
+
+    payload = response.get_json()
+    assert payload["objective"]
+    assert isinstance(payload["process_map"], list)
+    assert isinstance(payload["unified_pipeline"], list)
+    assert isinstance(payload["environments"], list)
+    assert isinstance(payload["monitoring"], list)
+    assert "generated_at" in payload
+
+    first_step = payload["process_map"][0]
+    assert first_step["input"]
+    assert first_step["rules"]
+    assert first_step["output"]
+
+
+def test_enterprise_report_api(client):
+    """Garante relatório operacional para uso da empresa."""
+    response = client.get("/api/enterprise/report")
+    assert response.status_code == 200
+
+    payload = response.get_json()
+    assert payload["summary"]["pipeline_health"]
+    assert payload["summary"]["sla_compliance"]
+    assert payload["summary"]["critical_alerts"] >= 0
+    assert len(payload["priority_actions"]) >= 1
+    assert "generated_at" in payload
+
+
 def test_not_found_returns_consistent_error(client):
     """Teste para garantir resposta de erro consistente para rotas inexistentes."""
     response = client.get("/nao-existe")
@@ -83,9 +115,20 @@ def test_security_headers_present(client):
     assert response.headers["X-Content-Type-Options"] == "nosniff"
     assert response.headers["X-Frame-Options"] == "DENY"
     assert "default-src 'self'" in response.headers["Content-Security-Policy"]
+    assert response.headers["X-Request-ID"]
 
 
-@pytest.mark.parametrize("path", ["/", "/about", "/api/project-structure", "/health"])
+@pytest.mark.parametrize(
+    "path",
+    [
+        "/",
+        "/about",
+        "/api/project-structure",
+        "/api/enterprise/automation",
+        "/api/enterprise/report",
+        "/health",
+    ],
+)
 def test_vary_cookie_header_present(client, path):
     """Vary: Cookie deve estar presente em todas as rotas."""
     response = client.get(path)

@@ -180,7 +180,8 @@ h3 {
 .stack-grid,
 .code-map-grid,
 .ai-layout,
-.command-panel {
+.command-panel,
+.enterprise-grid {
     display: grid;
     gap: 16px;
 }
@@ -224,6 +225,10 @@ h3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.enterprise-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .stack-item span,
 .command-label {
     display: inline-block;
@@ -241,6 +246,11 @@ h3 {
 .code-map-card ul {
     padding-left: 18px;
     margin: 0;
+}
+
+.enterprise-list {
+    margin: 0;
+    padding-left: 18px;
 }
 
 .command-panel {

@@ -1,5 +1,9 @@
-from flask import Blueprint, jsonify, render_template
+from flask import Blueprint, current_app, jsonify, render_template
 
+from python.services.enterprise_automation import (
+    get_enterprise_automation_payload,
+    get_operational_report_payload,
+)
 from python.services.project_overview import get_project_overview
 from python.services.project_structure import get_project_structure_payload
 
@@ -26,3 +30,14 @@ def project_structure():
 @bp.route("/health")
 def health():
     return jsonify(status="ok", service="estrutura-do-projeto"), 200
+
+
+@bp.route("/api/enterprise/automation")
+def enterprise_automation():
+    active_environment = current_app.config.get("AUTOMATION_ACTIVE_ENV", "production")
+    return jsonify(get_enterprise_automation_payload(active_environment))
+
+
+@bp.route("/api/enterprise/report")
+def enterprise_report():
+    return jsonify(get_operational_report_payload())
