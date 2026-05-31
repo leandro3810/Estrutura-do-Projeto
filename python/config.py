@@ -6,8 +6,12 @@ class BaseConfig:
     SESSION_COOKIE_SAMESITE = "Lax"
     SESSION_COOKIE_SECURE = True
     PREFERRED_URL_SCHEME = "https"
+    AUTOMATION_ACTIVE_ENV = "production"
+    AUTOMATION_ALLOWED_ROLES = ("operacoes", "gestao", "auditoria")
+    AUTOMATION_RUNTIME_ROLE = "operacoes"
 
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     SESSION_COOKIE_SECURE = False
+    AUTOMATION_ACTIVE_ENV = "development"

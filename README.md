@@ -54,6 +54,14 @@ O script cria `.venv`, instala dependências Python e Node/TypeScript.
 4. **Qualidade:** `bash scripts/lint.sh && bash scripts/test.sh`
 5. **Segurança de dependências (opcional local / obrigatório no CI):** `source .venv/bin/activate && pip check && npm audit --audit-level=high`
 
+### Fluxo de entrega empresarial (pipeline único)
+
+```bash
+bash scripts/deploy.sh
+```
+
+Esse fluxo executa lint, testes, validação TypeScript e build final em uma única sequência.
+
 ## 5) Backend (Flask)
 
 - Fábrica do app em `python/__init__.py`
@@ -111,6 +119,14 @@ O script cria `.venv`, instala dependências Python e Node/TypeScript.
 - Monitorar disponibilidade via `/health`
 - Revisar logs e falhas de execução
 - Manter rotina de atualização de dependências e testes de regressão
+- Consultar o painel empresarial em `Home > Automação Empresarial`
+- Usar API operacional:
+  - `/api/enterprise/automation` (objetivo, processos, pipeline, ambientes e monitoramento)
+  - `/api/enterprise/report` (resumo diário e ações prioritárias)
+- Controle de acesso dos endpoints empresariais:
+  - Papel operacional definido no servidor (`AUTOMATION_RUNTIME_ROLE`)
+  - Valores permitidos: `operacoes`, `gestao` ou `auditoria`
+  - Papel fora da lista recebe `403`
 
 ## 12) Evolução Contínua
 

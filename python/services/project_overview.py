@@ -10,11 +10,13 @@ def get_project_overview():
             "Painel com comandos rápidos no frontend",
             "Build TypeScript com saída em Static/js",
             "Scripts de setup, lint e testes automatizados",
+            "Painel de automação empresarial com pipeline único",
         ],
         "build_steps": [
             "bash scripts/setup.sh",
             "npm run build",
             "flask --app python/Run.py run",
             "bash scripts/lint.sh && bash scripts/test.sh",
+            "bash scripts/deploy.sh",
         ],
     }

@@ -15,6 +15,44 @@ type ProjectStructureResponse = {
     structure: ProjectStructureNode[];
 };
 
+type ProcessStep = {
+    step: string;
+    process_input: string;
+    rules: string;
+    output: string;
+};
+
+type PipelineStep = {
+    name: string;
+    description: string;
+};
+
+type EnvironmentProfile = {
+    name: string;
+    purpose: string;
+    has_strict_controls: boolean;
+    is_active: boolean;
+};
+
+type OperationalSummary = {
+    pipeline_health: string;
+    sla_compliance: string;
+    critical_alerts: number;
+};
+
+type EnterpriseAutomationResponse = {
+    objective: string;
+    process_map: ProcessStep[];
+    unified_pipeline: PipelineStep[];
+    environments: EnvironmentProfile[];
+    operational_report: {
+        summary: OperationalSummary;
+        priority_actions: string[];
+    };
+    monitoring: string[];
+    generated_at: string;
+};
+
 const STRUCTURE_REFRESH_MS = 10000;
 const STRUCTURE_REFRESH_SECONDS = STRUCTURE_REFRESH_MS / 1000;
 let structureRefreshIntervalId: number | undefined;
@@ -105,6 +143,87 @@ async function refreshProjectStructure(): Promise<void> {
     }
 }
 
+function listItem(text: string): HTMLLIElement {
+    const item = document.createElement("li");
+    item.textContent = text;
+    return item;
+}
+
+async function refreshEnterpriseAutomation(): Promise<void> {
+    const updatedEl = document.getElementById("enterprise-automation-updated");
+    const objectiveEl = document.getElementById("enterprise-objective");
+    const processMapEl = document.getElementById("enterprise-process-map");
+    const pipelineEl = document.getElementById("enterprise-pipeline");
+    const environmentsEl = document.getElementById("enterprise-environments");
+    const monitoringEl = document.getElementById("enterprise-monitoring");
+    const priorityActionsEl = document.getElementById("enterprise-priority-actions");
+
+    if (
+        !updatedEl ||
+        !objectiveEl ||
+        !processMapEl ||
+        !pipelineEl ||
+        !environmentsEl ||
+        !monitoringEl ||
+        !priorityActionsEl
+    ) {
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/enterprise/automation", {
+            cache: "no-store",
+        });
+        if (!response.ok) {
+            if (response.status === 403) {
+                updatedEl.textContent = "Acesso não autorizado ao painel operacional.";
+                return;
+            }
+            throw new Error(`Status ${response.status}`);
+        }
+
+        const data = (await response.json()) as EnterpriseAutomationResponse;
+        objectiveEl.textContent = data.objective;
+        processMapEl.innerHTML = "";
+        pipelineEl.innerHTML = "";
+        environmentsEl.innerHTML = "";
+        monitoringEl.innerHTML = "";
+        priorityActionsEl.innerHTML = "";
+
+        data.process_map.forEach((step) => {
+            processMapEl.appendChild(
+                listItem(
+                    `${step.step}: entrada (${step.process_input}) → saída (${step.output}).`
+                )
+            );
+        });
+
+        data.unified_pipeline.forEach((step) => {
+            pipelineEl.appendChild(listItem(`${step.name}: ${step.description}`));
+        });
+
+        data.environments.forEach((environment) => {
+            const status = environment.is_active ? "ativo" : "pronto";
+            const control = environment.has_strict_controls ? "controle rígido" : "controle básico";
+            environmentsEl.appendChild(
+                listItem(`${environment.name} (${status}) — ${environment.purpose} [${control}]`)
+            );
+        });
+
+        data.monitoring.forEach((monitoringItem) => {
+            monitoringEl.appendChild(listItem(monitoringItem));
+        });
+
+        data.operational_report.priority_actions.forEach((action) => {
+            priorityActionsEl.appendChild(listItem(action));
+        });
+
+        updatedEl.textContent = `Operação atualizada em ${formatTimestamp(data.generated_at)}.`;
+    } catch {
+        updatedEl.textContent = "Não foi possível carregar o painel operacional.";
+    }
+}
+
 function processAgentCommand(rawCommand: string): void {
     const command = rawCommand.trim().toLowerCase();
 
@@ -150,6 +269,13 @@ function processAgentCommand(rawCommand: string): void {
     if (command.includes("estrutura") || command.includes("tempo real")) {
         scrollToSection("estrutura-tempo-real");
         setAgentOutput("Estrutura do projeto em tempo real aberta com atualização automática.");
+        return;
+    }
+
+    if (command.includes("relat") || command.includes("opera") || command.includes("empresa")) {
+        scrollToSection("operacao-empresa");
+        setAgentOutput("Painel operacional aberto com objetivo, pipeline e relatório diário.");
+        void refreshEnterpriseAutomation();
         return;
     }
 
@@ -211,9 +337,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     refreshProjectStructure();
+    void refreshEnterpriseAutomation();
     if (!structureRefreshIntervalId) {
         structureRefreshIntervalId = window.setInterval(() => {
             void refreshProjectStructure();
+            void refreshEnterpriseAutomation();
         }, STRUCTURE_REFRESH_MS);
     }
 });

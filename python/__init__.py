@@ -1,7 +1,9 @@
 import os
 import secrets
+from time import perf_counter
+from uuid import uuid4
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, g, jsonify, render_template, request
 from jinja2 import TemplateNotFound
 from werkzeug.exceptions import HTTPException
 
@@ -67,6 +69,11 @@ def create_app(test_config=None):
         }
         return render_template("errors/500.html", error=safe_error), 500
 
+    @app.before_request
+    def register_request_audit_context():
+        g.request_id = uuid4().hex
+        g.request_start = perf_counter()
+
     @app.after_request
     def apply_security_headers(response):
         csp_directives = [
@@ -86,6 +93,22 @@ def create_app(test_config=None):
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Content-Security-Policy"] = "; ".join(csp_directives)
         response.vary.add("Cookie")
+        response.headers["X-Request-ID"] = getattr(g, "request_id", "unknown")
+
+        start = getattr(g, "request_start", None)
+        duration_ms = (perf_counter() - start) * 1000 if start is not None else None
+        app.logger.info(
+            (
+                "audit request_id=%s method=%s path=%s "
+                "status=%s duration_ms=%s remote=%s"
+            ),
+            getattr(g, "request_id", "unknown"),
+            request.method,
+            request.path,
+            response.status_code,
+            f"{duration_ms:.2f}" if duration_ms is not None else "n/a",
+            request.remote_addr,
+        )
         return response
 
     return app
