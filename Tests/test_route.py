@@ -83,7 +83,7 @@ def test_enterprise_automation_api(client):
     assert "generated_at" in payload
 
     first_step = payload["process_map"][0]
-    assert first_step["input"]
+    assert first_step["process_input"]
     assert first_step["rules"]
     assert first_step["output"]
 
@@ -99,6 +99,24 @@ def test_enterprise_report_api(client):
     assert payload["summary"]["critical_alerts"] >= 0
     assert len(payload["priority_actions"]) >= 1
     assert "generated_at" in payload
+
+
+def test_enterprise_automation_requires_allowed_role(client):
+    """Bloqueia acesso de perfil sem permissão à automação empresarial."""
+    client.application.config["AUTOMATION_RUNTIME_ROLE"] = "visitante"
+    response = client.get("/api/enterprise/automation")
+    assert response.status_code == 403
+    assert response.get_json()["error"] == "Forbidden"
+    client.application.config["AUTOMATION_RUNTIME_ROLE"] = "operacoes"
+
+
+def test_enterprise_report_requires_allowed_role(client):
+    """Bloqueia acesso de perfil sem permissão ao relatório operacional."""
+    client.application.config["AUTOMATION_RUNTIME_ROLE"] = "visitante"
+    response = client.get("/api/enterprise/report")
+    assert response.status_code == 403
+    assert response.get_json()["error"] == "Forbidden"
+    client.application.config["AUTOMATION_RUNTIME_ROLE"] = "operacoes"
 
 
 def test_not_found_returns_consistent_error(client):
@@ -119,18 +137,18 @@ def test_security_headers_present(client):
 
 
 @pytest.mark.parametrize(
-    "path",
+    ("path", "headers"),
     [
-        "/",
-        "/about",
-        "/api/project-structure",
-        "/api/enterprise/automation",
-        "/api/enterprise/report",
-        "/health",
+        ("/", None),
+        ("/about", None),
+        ("/api/project-structure", None),
+        ("/api/enterprise/automation", None),
+        ("/api/enterprise/report", None),
+        ("/health", None),
     ],
 )
-def test_vary_cookie_header_present(client, path):
+def test_vary_cookie_header_present(client, path, headers):
     """Vary: Cookie deve estar presente em todas as rotas."""
-    response = client.get(path)
+    response = client.get(path, headers=headers)
     vary = response.headers.get("Vary", "")
     assert "Cookie" in vary, f"Vary: Cookie ausente na rota {path}"

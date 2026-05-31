@@ -8,6 +8,7 @@ class BaseConfig:
     PREFERRED_URL_SCHEME = "https"
     AUTOMATION_ACTIVE_ENV = "production"
     AUTOMATION_ALLOWED_ROLES = ("operacoes", "gestao", "auditoria")
+    AUTOMATION_RUNTIME_ROLE = "operacoes"
 
 
 class DevelopmentConfig(BaseConfig):

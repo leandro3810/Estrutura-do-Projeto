@@ -17,7 +17,7 @@ type ProjectStructureResponse = {
 
 type ProcessStep = {
     step: string;
-    input: string;
+    process_input: string;
     rules: string;
     output: string;
 };
@@ -175,6 +175,10 @@ async function refreshEnterpriseAutomation(): Promise<void> {
             cache: "no-store",
         });
         if (!response.ok) {
+            if (response.status === 403) {
+                updatedEl.textContent = "Acesso não autorizado ao painel operacional.";
+                return;
+            }
             throw new Error(`Status ${response.status}`);
         }
 
@@ -188,7 +192,9 @@ async function refreshEnterpriseAutomation(): Promise<void> {
 
         data.process_map.forEach((step) => {
             processMapEl.appendChild(
-                listItem(`${step.step}: entrada (${step.input}) → saída (${step.output}).`)
+                listItem(
+                    `${step.step}: entrada (${step.process_input}) → saída (${step.output}).`
+                )
             );
         });
 

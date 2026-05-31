@@ -96,17 +96,17 @@ def create_app(test_config=None):
         response.headers["X-Request-ID"] = getattr(g, "request_id", "unknown")
 
         start = getattr(g, "request_start", None)
-        duration_ms = (perf_counter() - start) * 1000 if start is not None else -1
+        duration_ms = (perf_counter() - start) * 1000 if start is not None else None
         app.logger.info(
             (
                 "audit request_id=%s method=%s path=%s "
-                "status=%s duration_ms=%.2f remote=%s"
+                "status=%s duration_ms=%s remote=%s"
             ),
             getattr(g, "request_id", "unknown"),
             request.method,
             request.path,
             response.status_code,
-            duration_ms,
+            f"{duration_ms:.2f}" if duration_ms is not None else "n/a",
             request.remote_addr,
         )
         return response

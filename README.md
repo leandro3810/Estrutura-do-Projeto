@@ -123,6 +123,10 @@ Esse fluxo executa lint, testes, validação TypeScript e build final em uma ún
 - Usar API operacional:
   - `/api/enterprise/automation` (objetivo, processos, pipeline, ambientes e monitoramento)
   - `/api/enterprise/report` (resumo diário e ações prioritárias)
+- Controle de acesso dos endpoints empresariais:
+  - Papel operacional definido no servidor (`AUTOMATION_RUNTIME_ROLE`)
+  - Valores permitidos: `operacoes`, `gestao` ou `auditoria`
+  - Papel fora da lista recebe `403`
 
 ## 12) Evolução Contínua
 

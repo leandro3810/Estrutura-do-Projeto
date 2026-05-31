@@ -1,25 +1,70 @@
 from datetime import UTC, datetime
+from typing import TypedDict
 
 PROCESS_MAP = [
     {
         "step": "Coleta de demandas",
-        "input": "tickets internos e solicitações por formulário",
+        "process_input": "tickets internos e solicitações por formulário",
         "rules": "validar campos obrigatórios e prioridade",
         "output": "fila operacional priorizada",
     },
     {
         "step": "Processamento operacional",
-        "input": "fila priorizada",
+        "process_input": "fila priorizada",
         "rules": "aplicar regras de SLA e responsável por área",
         "output": "tarefas distribuídas com prazo",
     },
     {
         "step": "Relatório executivo",
-        "input": "tarefas concluídas e pendentes",
+        "process_input": "tarefas concluídas e pendentes",
         "rules": "consolidar KPI diário e exceções",
         "output": "painel de operação para gestão",
     },
 ]
+
+
+class ProcessStep(TypedDict):
+    step: str
+    process_input: str
+    rules: str
+    output: str
+
+
+class PipelineStep(TypedDict):
+    name: str
+    description: str
+
+
+class EnvironmentProfile(TypedDict):
+    name: str
+    purpose: str
+    has_strict_controls: bool
+    is_active: bool
+
+
+class OperationalSummary(TypedDict):
+    pipeline_health: str
+    sla_compliance: str
+    critical_alerts: int
+
+
+class OperationalReport(TypedDict):
+    summary: OperationalSummary
+    priority_actions: list[str]
+
+
+class EnterpriseAutomationPayload(TypedDict):
+    objective: str
+    process_map: list[ProcessStep]
+    unified_pipeline: list[PipelineStep]
+    environments: list[EnvironmentProfile]
+    operational_report: OperationalReport
+    monitoring: list[str]
+    generated_at: str
+
+
+class OperationalReportPayload(OperationalReport):
+    generated_at: str
 
 
 def _automation_goal() -> str:
@@ -29,7 +74,7 @@ def _automation_goal() -> str:
     )
 
 
-def _build_pipeline() -> list[dict[str, str]]:
+def _build_pipeline() -> list[PipelineStep]:
     return [
         {"name": "coleta", "description": "Captura e valida as entradas de negócio."},
         {
@@ -40,7 +85,7 @@ def _build_pipeline() -> list[dict[str, str]]:
     ]
 
 
-def _environment_profiles(active_environment: str) -> list[dict[str, object]]:
+def _environment_profiles(active_environment: str) -> list[EnvironmentProfile]:
     profiles = [
         {
             "name": "development",
@@ -64,10 +109,10 @@ def _environment_profiles(active_environment: str) -> list[dict[str, object]]:
     return profiles
 
 
-def _operational_report() -> dict[str, object]:
+def _operational_report() -> OperationalReport:
     return {
         "summary": {
-            "pipeline_health": "estavel",
+            "pipeline_health": "estável",
             "sla_compliance": "95%",
             "critical_alerts": 0,
         },
@@ -87,7 +132,9 @@ def _monitoring_plan() -> list[str]:
     ]
 
 
-def get_enterprise_automation_payload(active_environment: str) -> dict[str, object]:
+def get_enterprise_automation_payload(
+    active_environment: str,
+) -> EnterpriseAutomationPayload:
     return {
         "objective": _automation_goal(),
         "process_map": PROCESS_MAP,
@@ -99,7 +146,10 @@ def get_enterprise_automation_payload(active_environment: str) -> dict[str, obje
     }
 
 
-def get_operational_report_payload() -> dict[str, object]:
+def get_operational_report_payload() -> OperationalReportPayload:
     report = _operational_report()
-    report["generated_at"] = datetime.now(UTC).isoformat()
-    return report
+    return {
+        "summary": report["summary"],
+        "priority_actions": report["priority_actions"],
+        "generated_at": datetime.now(UTC).isoformat(),
+    }
