@@ -107,6 +107,7 @@ function updateStaticClock() {
     const minute = `${now.getMinutes()}`.padStart(2, "0");
     const second = `${now.getSeconds()}`.padStart(2, "0");
     clock.textContent = `${hour}:${minute}:${second}`;
+    clock.setAttribute("datetime", now.toISOString());
 }
 
 document.addEventListener("DOMContentLoaded", () => {
