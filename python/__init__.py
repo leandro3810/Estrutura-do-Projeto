@@ -98,7 +98,10 @@ def create_app(test_config=None):
         start = getattr(g, "request_start", None)
         duration_ms = (perf_counter() - start) * 1000 if start is not None else -1
         app.logger.info(
-            "audit request_id=%s method=%s path=%s status=%s duration_ms=%.2f remote=%s",
+            (
+                "audit request_id=%s method=%s path=%s "
+                "status=%s duration_ms=%.2f remote=%s"
+            ),
             getattr(g, "request_id", "unknown"),
             request.method,
             request.path,

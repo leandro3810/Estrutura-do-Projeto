@@ -74,6 +74,65 @@ async function refreshProjectStructure() {
         updatedEl.textContent = "Não foi possível atualizar a estrutura em tempo real.";
     }
 }
+function listItem(text) {
+    const item = document.createElement("li");
+    item.textContent = text;
+    return item;
+}
+async function refreshEnterpriseAutomation() {
+    const updatedEl = document.getElementById("enterprise-automation-updated");
+    const objectiveEl = document.getElementById("enterprise-objective");
+    const processMapEl = document.getElementById("enterprise-process-map");
+    const pipelineEl = document.getElementById("enterprise-pipeline");
+    const environmentsEl = document.getElementById("enterprise-environments");
+    const monitoringEl = document.getElementById("enterprise-monitoring");
+    const priorityActionsEl = document.getElementById("enterprise-priority-actions");
+    if (!updatedEl ||
+        !objectiveEl ||
+        !processMapEl ||
+        !pipelineEl ||
+        !environmentsEl ||
+        !monitoringEl ||
+        !priorityActionsEl) {
+        return;
+    }
+    try {
+        const response = await fetch("/api/enterprise/automation", {
+            cache: "no-store",
+        });
+        if (!response.ok) {
+            throw new Error(`Status ${response.status}`);
+        }
+        const data = (await response.json());
+        objectiveEl.textContent = data.objective;
+        processMapEl.innerHTML = "";
+        pipelineEl.innerHTML = "";
+        environmentsEl.innerHTML = "";
+        monitoringEl.innerHTML = "";
+        priorityActionsEl.innerHTML = "";
+        data.process_map.forEach((step) => {
+            processMapEl.appendChild(listItem(`${step.step}: entrada (${step.input}) → saída (${step.output}).`));
+        });
+        data.unified_pipeline.forEach((step) => {
+            pipelineEl.appendChild(listItem(`${step.name}: ${step.description}`));
+        });
+        data.environments.forEach((environment) => {
+            const status = environment.is_active ? "ativo" : "pronto";
+            const control = environment.has_strict_controls ? "controle rígido" : "controle básico";
+            environmentsEl.appendChild(listItem(`${environment.name} (${status}) — ${environment.purpose} [${control}]`));
+        });
+        data.monitoring.forEach((monitoringItem) => {
+            monitoringEl.appendChild(listItem(monitoringItem));
+        });
+        data.operational_report.priority_actions.forEach((action) => {
+            priorityActionsEl.appendChild(listItem(action));
+        });
+        updatedEl.textContent = `Operação atualizada em ${formatTimestamp(data.generated_at)}.`;
+    }
+    catch (_a) {
+        updatedEl.textContent = "Não foi possível carregar o painel operacional.";
+    }
+}
 function processAgentCommand(rawCommand) {
     const command = rawCommand.trim().toLowerCase();
     if (!command) {
@@ -112,6 +171,12 @@ function processAgentCommand(rawCommand) {
     if (command.includes("estrutura") || command.includes("tempo real")) {
         scrollToSection("estrutura-tempo-real");
         setAgentOutput("Estrutura do projeto em tempo real aberta com atualização automática.");
+        return;
+    }
+    if (command.includes("relat") || command.includes("opera") || command.includes("empresa")) {
+        scrollToSection("operacao-empresa");
+        setAgentOutput("Painel operacional aberto com objetivo, pipeline e relatório diário.");
+        void refreshEnterpriseAutomation();
         return;
     }
     if (command.includes("foco")) {
@@ -164,9 +229,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
     refreshProjectStructure();
+    void refreshEnterpriseAutomation();
     if (!structureRefreshIntervalId) {
         structureRefreshIntervalId = window.setInterval(() => {
             void refreshProjectStructure();
+            void refreshEnterpriseAutomation();
         }, STRUCTURE_REFRESH_MS);
     }
 });
